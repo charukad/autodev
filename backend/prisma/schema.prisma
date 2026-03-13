@@ -1,0 +1,479 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  developer
+  viewer
+}
+
+enum SessionStatus {
+  active
+  paused
+  completed
+  failed
+}
+
+enum AgentRole {
+  planner
+  code
+  test
+  debug
+  security
+  repo_scanner
+  pm
+  code_review
+  architecture
+  documentation
+  compliance
+  cicd
+}
+
+enum AgentState {
+  idle
+  planning
+  thinking
+  reading
+  writing
+  testing
+  debugging
+  completed
+  failed
+}
+
+enum TaskPriority {
+  critical
+  high
+  medium
+  low
+}
+
+enum TaskStatus {
+  pending
+  queued
+  active
+  completed
+  failed
+  cancelled
+}
+
+enum AssignmentStatus {
+  assigned
+  active
+  completed
+  failed
+}
+
+enum EventSeverity {
+  info
+  warning
+  error
+  critical
+}
+
+enum ToolCallStatus {
+  started
+  completed
+  failed
+  timeout
+}
+
+enum RiskLevel {
+  safe
+  moderate
+  dangerous
+}
+
+enum ChangeType {
+  created
+  modified
+  deleted
+  moved
+}
+
+enum BudgetScope {
+  session
+  agent
+  task
+  user
+  global
+}
+
+enum MessageType {
+  request
+  response
+  notification
+  handoff
+  broadcast
+}
+
+enum ApprovalStatus {
+  pending
+  approved
+  rejected
+  expired
+  escalated
+}
+
+enum DefaultAction {
+  approve
+  reject
+  escalate
+}
+
+enum MemoryType {
+  long_term
+  strategy
+}
+
+model User {
+  id                String            @id @default(uuid()) @db.Uuid
+  email             String            @unique @db.VarChar(255)
+  name              String            @db.VarChar(255)
+  passwordHash      String            @map("password_hash") @db.VarChar(255)
+  role              UserRole          @default(developer)
+  settings          Json              @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  sessions          Session[]
+  approvalDecisions ApprovalRequest[] @relation("ApprovalDecision")
+
+  @@map("users")
+}
+
+model Session {
+  id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @map("user_id") @db.Uuid
+  projectPath      String            @map("project_path") @db.VarChar(1024)
+  projectName      String?           @map("project_name") @db.VarChar(255)
+  status           SessionStatus     @default(active)
+  config           Json              @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  startedAt        DateTime          @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt          DateTime?         @map("ended_at") @db.Timestamptz(6)
+  totalTokensUsed  Int               @default(0) @map("total_tokens_used")
+  totalCostUsd     Decimal           @default(0) @map("total_cost_usd") @db.Decimal(10, 6)
+  user             User              @relation(fields: [userId], references: [id])
+  agents           Agent[]
+  tasks            Task[]
+  events           Event[]
+  toolCalls        ToolCall[]
+  fileChanges      FileChange[]
+  replayFrames     ReplayFrame[]
+  llmCalls         LlmCall[]
+  messages         Message[]
+  approvalRequests ApprovalRequest[]
+  knowledgeNodes   KnowledgeNode[]
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Agent {
+  id               String           @id @default(uuid()) @db.Uuid
+  sessionId        String           @map("session_id") @db.Uuid
+  role             AgentRole
+  displayName      String           @map("display_name") @db.VarChar(255)
+  state            AgentState       @default(idle)
+  room             String           @default("lobby") @db.VarChar(100)
+  currentTaskId    String?          @map("current_task_id") @db.Uuid
+  memory           Json             @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  performanceScore Decimal          @default(0) @map("performance_score") @db.Decimal(5, 2)
+  toolsAccess      String[]         @default([]) @map("tools_access")
+  tokenBudget      Int              @default(100000) @map("token_budget")
+  tokensUsed       Int              @default(0) @map("tokens_used")
+  tasksCompleted   Int              @default(0) @map("tasks_completed")
+  tasksFailed      Int              @default(0) @map("tasks_failed")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  terminatedAt     DateTime?        @map("terminated_at") @db.Timestamptz(6)
+  session          Session          @relation(fields: [sessionId], references: [id])
+  currentTask      Task?            @relation("AgentCurrentTask", fields: [currentTaskId], references: [id], onDelete: SetNull)
+  taskAssignments  TaskAssignment[]
+  events           Event[]
+  toolCalls        ToolCall[]
+  fileChanges      FileChange[]
+  llmCalls         LlmCall[]
+  sentMessages     Message[]        @relation("AgentSentMessages")
+  receivedMessages Message[]        @relation("AgentReceivedMessages")
+  approvalRequests ApprovalRequest[]
+  memoryEntries    MemoryEntry[]
+
+  @@index([sessionId, state])
+  @@index([currentTaskId])
+  @@map("agents")
+}
+
+model Task {
+  id                String           @id @default(uuid()) @db.Uuid
+  sessionId         String           @map("session_id") @db.Uuid
+  parentTaskId      String?          @map("parent_task_id") @db.Uuid
+  name              String           @db.VarChar(500)
+  description       String?          @db.Text
+  priority          TaskPriority     @default(medium)
+  status            TaskStatus       @default(pending)
+  taskType          String?          @map("task_type") @db.VarChar(100)
+  input             Json             @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  output            Json             @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  tokenBudget       Int              @default(50000) @map("token_budget")
+  tokensUsed        Int              @default(0) @map("tokens_used")
+  startedAt         DateTime?        @map("started_at") @db.Timestamptz(6)
+  completedAt       DateTime?        @map("completed_at") @db.Timestamptz(6)
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  session           Session          @relation(fields: [sessionId], references: [id])
+  parentTask        Task?            @relation("TaskHierarchy", fields: [parentTaskId], references: [id], onDelete: SetNull)
+  subtasks          Task[]           @relation("TaskHierarchy")
+  dependencies      TaskDependency[] @relation("TaskDependencies")
+  dependents        TaskDependency[] @relation("TaskDependents")
+  currentAgents     Agent[]          @relation("AgentCurrentTask")
+  assignments       TaskAssignment[]
+  events            Event[]
+  toolCalls         ToolCall[]
+  fileChanges       FileChange[]
+  @@index([sessionId, status])
+  @@index([parentTaskId])
+  @@map("tasks")
+}
+
+model TaskDependency {
+  id          String   @id @default(uuid()) @db.Uuid
+  taskId      String   @map("task_id") @db.Uuid
+  dependsOnId String   @map("depends_on_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  task        Task     @relation("TaskDependencies", fields: [taskId], references: [id], onDelete: Cascade)
+  dependsOn   Task     @relation("TaskDependents", fields: [dependsOnId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, dependsOnId])
+  @@map("task_dependencies")
+}
+
+model TaskAssignment {
+  id          String           @id @default(uuid()) @db.Uuid
+  taskId      String           @map("task_id") @db.Uuid
+  agentId     String           @map("agent_id") @db.Uuid
+  assignedAt  DateTime         @default(now()) @map("assigned_at") @db.Timestamptz(6)
+  completedAt DateTime?        @map("completed_at") @db.Timestamptz(6)
+  status      AssignmentStatus @default(assigned)
+  task        Task             @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  agent       Agent            @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("task_assignments")
+}
+
+model Event {
+  id        String        @id @default(uuid()) @db.Uuid
+  sessionId String        @map("session_id") @db.Uuid
+  eventType String        @map("event_type") @db.VarChar(100)
+  agentId   String?       @map("agent_id") @db.Uuid
+  taskId    String?       @map("task_id") @db.Uuid
+  payload   Json          @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  severity  EventSeverity @default(info)
+  timestamp DateTime      @default(now()) @db.Timestamptz(6)
+  session   Session       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  agent     Agent?        @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  task      Task?         @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  frames    ReplayFrame[]
+
+  @@index([sessionId, timestamp])
+  @@index([eventType])
+  @@index([agentId])
+  @@index([taskId])
+  @@map("events")
+}
+
+model ToolCall {
+  id          String         @id @default(uuid()) @db.Uuid
+  sessionId   String         @map("session_id") @db.Uuid
+  agentId     String         @map("agent_id") @db.Uuid
+  taskId      String?        @map("task_id") @db.Uuid
+  toolName    String         @map("tool_name") @db.VarChar(100)
+  input       Json           @db.JsonB
+  output      Json?          @db.JsonB
+  status      ToolCallStatus
+  riskLevel   RiskLevel      @map("risk_level")
+  durationMs  Int?           @map("duration_ms")
+  tokensUsed  Int            @default(0) @map("tokens_used")
+  error       String?        @db.Text
+  startedAt   DateTime       @default(now()) @map("started_at") @db.Timestamptz(6)
+  completedAt DateTime?      @map("completed_at") @db.Timestamptz(6)
+  session     Session        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  agent       Agent          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  task        Task?          @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  @@index([agentId, startedAt])
+  @@index([sessionId, startedAt])
+  @@map("tool_calls")
+}
+
+model FileChange {
+  id            String     @id @default(uuid()) @db.Uuid
+  sessionId     String     @map("session_id") @db.Uuid
+  agentId       String     @map("agent_id") @db.Uuid
+  taskId        String?    @map("task_id") @db.Uuid
+  filePath      String     @map("file_path") @db.VarChar(1024)
+  changeType    ChangeType @map("change_type")
+  diff          String?    @db.Text
+  contentBefore String?    @map("content_before") @db.Text
+  contentAfter  String?    @map("content_after") @db.Text
+  timestamp     DateTime   @default(now()) @db.Timestamptz(6)
+  session       Session    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  agent         Agent      @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  task          Task?      @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, timestamp])
+  @@index([filePath])
+  @@map("file_changes")
+}
+
+model ReplayFrame {
+  id          String    @id @default(uuid()) @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  frameNumber Int       @map("frame_number")
+  agentStates Json      @map("agent_states") @db.JsonB
+  activeTasks Json      @map("active_tasks") @db.JsonB
+  eventId     String?   @map("event_id") @db.Uuid
+  timestamp   DateTime  @default(now()) @db.Timestamptz(6)
+  session     Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  event       Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@unique([sessionId, frameNumber])
+  @@map("replay_frames")
+}
+
+model Budget {
+  id             String      @id @default(uuid()) @db.Uuid
+  scope          BudgetScope
+  scopeId        String      @map("scope_id") @db.VarChar(64)
+  tokenLimit     Int         @map("token_limit")
+  tokensUsed     Int         @default(0) @map("tokens_used")
+  costLimitUsd   Decimal?    @map("cost_limit_usd") @db.Decimal(10, 4)
+  costUsedUsd    Decimal     @default(0) @map("cost_used_usd") @db.Decimal(10, 6)
+  computeLimitMs BigInt?     @map("compute_limit_ms")
+  computeUsedMs  BigInt      @default(0) @map("compute_used_ms")
+  createdAt      DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([scope, scopeId])
+  @@map("budgets")
+}
+
+model LlmCall {
+  id               String    @id @default(uuid()) @db.Uuid
+  sessionId        String    @map("session_id") @db.Uuid
+  agentId          String?   @map("agent_id") @db.Uuid
+  provider         String    @db.VarChar(50)
+  model            String    @db.VarChar(100)
+  promptTokens     Int       @map("prompt_tokens")
+  completionTokens Int       @map("completion_tokens")
+  totalTokens      Int       @map("total_tokens")
+  costUsd          Decimal   @map("cost_usd") @db.Decimal(10, 6)
+  latencyMs        Int       @map("latency_ms")
+  cached           Boolean   @default(false)
+  timestamp        DateTime  @default(now()) @db.Timestamptz(6)
+  session          Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  agent            Agent?    @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, timestamp])
+  @@index([provider, model])
+  @@map("llm_calls")
+}
+
+model Message {
+  id            String      @id @default(uuid()) @db.Uuid
+  sessionId     String      @map("session_id") @db.Uuid
+  fromAgentId   String?     @map("from_agent_id") @db.Uuid
+  toAgentId     String?     @map("to_agent_id") @db.Uuid
+  channel       String      @db.VarChar(100)
+  messageType   MessageType @map("message_type")
+  payload       Json        @db.JsonB
+  correlationId String?     @map("correlation_id") @db.Uuid
+  timestamp     DateTime    @default(now()) @db.Timestamptz(6)
+  session       Session     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  fromAgent     Agent?      @relation("AgentSentMessages", fields: [fromAgentId], references: [id], onDelete: SetNull)
+  toAgent       Agent?      @relation("AgentReceivedMessages", fields: [toAgentId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, timestamp])
+  @@map("messages")
+}
+
+model ApprovalRequest {
+  id            String         @id @default(uuid()) @db.Uuid
+  sessionId     String         @map("session_id") @db.Uuid
+  agentId       String         @map("agent_id") @db.Uuid
+  actionType    String         @map("action_type") @db.VarChar(100)
+  actionDetails Json           @map("action_details") @db.JsonB
+  diff          String?        @db.Text
+  riskLevel     RiskLevel      @map("risk_level")
+  status        ApprovalStatus @default(pending)
+  decidedBy     String?        @map("decided_by") @db.Uuid
+  decisionReason String?       @map("decision_reason") @db.Text
+  timeoutAt     DateTime?      @map("timeout_at") @db.Timestamptz(6)
+  defaultAction DefaultAction  @default(reject) @map("default_action")
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  decidedAt     DateTime?      @map("decided_at") @db.Timestamptz(6)
+  session       Session        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  agent         Agent          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  decisionMaker User?          @relation("ApprovalDecision", fields: [decidedBy], references: [id], onDelete: SetNull)
+
+  @@index([sessionId, status])
+  @@map("approval_requests")
+}
+
+model MemoryEntry {
+  id             String     @id @default(uuid()) @db.Uuid
+  memoryType     MemoryType @map("memory_type")
+  agentId        String?    @map("agent_id") @db.Uuid
+  projectPath    String?    @map("project_path") @db.VarChar(1024)
+  key            String     @db.VarChar(500)
+  content        Json       @db.JsonB
+  relevanceScore Decimal    @default(0) @map("relevance_score") @db.Decimal(5, 2)
+  accessCount    Int        @default(0) @map("access_count")
+  lastAccessedAt DateTime?  @map("last_accessed_at") @db.Timestamptz(6)
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  agent          Agent?     @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@index([key, memoryType])
+  @@index([projectPath])
+  @@map("memory_entries")
+}
+
+model KnowledgeNode {
+  id        String          @id @default(uuid()) @db.Uuid
+  sessionId String          @map("session_id") @db.Uuid
+  nodeType  String          @map("node_type") @db.VarChar(50)
+  name      String          @db.VarChar(500)
+  filePath  String?         @map("file_path") @db.VarChar(1024)
+  lineStart Int?            @map("line_start")
+  lineEnd   Int?            @map("line_end")
+  metadata  Json            @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  session   Session         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  outgoing  KnowledgeEdge[] @relation("KnowledgeEdgeSource")
+  incoming  KnowledgeEdge[] @relation("KnowledgeEdgeTarget")
+
+  @@index([nodeType])
+  @@map("knowledge_nodes")
+}
+
+model KnowledgeEdge {
+  id           String        @id @default(uuid()) @db.Uuid
+  sourceNodeId String        @map("source_node_id") @db.Uuid
+  targetNodeId String        @map("target_node_id") @db.Uuid
+  relationship String        @db.VarChar(50)
+  metadata     Json          @default(dbgenerated("'{}'::jsonb")) @db.JsonB
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  sourceNode   KnowledgeNode @relation("KnowledgeEdgeSource", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+  targetNode   KnowledgeNode @relation("KnowledgeEdgeTarget", fields: [targetNodeId], references: [id], onDelete: Cascade)
+
+  @@index([sourceNodeId])
+  @@index([targetNodeId])
+  @@index([relationship])
+  @@map("knowledge_edges")
+}
