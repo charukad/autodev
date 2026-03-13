@@ -1,6 +1,7 @@
 import { PROJECT_NAME, PROJECT_VERSION } from "@ai-office/shared";
 import { databaseConfig } from "./config/database";
 import { redisConfig } from "./config/redis";
+import { RedisChannels } from "./infrastructure/database/redis/keyspace";
 
 export function getFoundationSummary() {
   return {
@@ -19,6 +20,10 @@ export function getFoundationSummary() {
         db: redisConfig.db,
         keyPrefix: redisConfig.keyPrefix,
         queuePrefix: redisConfig.queuePrefix,
+      },
+      eventSystem: {
+        inMemoryBus: "available",
+        redisChannel: RedisChannels.events,
       },
     },
   };

@@ -15,6 +15,17 @@ let redisClient: Redis | undefined;
 let redisPublisher: Redis | undefined;
 let redisSubscriber: Redis | undefined;
 
+export function getRedisBaseOptions(): RedisOptions {
+  return { ...baseOptions };
+}
+
+export function createRedisConnection(overrides: RedisOptions = {}): Redis {
+  return new Redis({
+    ...baseOptions,
+    ...overrides,
+  });
+}
+
 export function getRedisClient(): Redis {
   if (!redisClient) {
     redisClient = new Redis(baseOptions);

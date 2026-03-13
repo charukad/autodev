@@ -9,6 +9,7 @@ export const RedisKeyspace = {
   sessionChannel: (sessionId: string) => `pubsub:session:${sessionId}`,
   blackboard: (sessionId: string) => `blackboard:${sessionId}`,
   budget: (scope: string, scopeId: string) => `budget:${scope}:${scopeId}`,
+  eventDeadLetter: "dead-letter:events",
 } as const;
 
 export const RedisChannels = {
