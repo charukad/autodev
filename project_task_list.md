@@ -73,27 +73,27 @@
 
 ## 1.3 Event System
 
-- [ ] Define all event types as TypeScript enum/union
-- [ ] Create event schema/interface (`timestamp`, `event_type`, `agent_id`, `task_id`, `payload`)
-- [ ] 📌 **Git Commit #12**: `feat(13-event-system): add define all event types and event schema/interface (`timestamp`` — Stage, commit, and push changes
-- [ ] Implement `EventBus` class with pub/sub support
-- [ ] Implement in-memory event bus for local mode
-- [ ] Implement Redis-backed event bus for distributed mode
-- [ ] 📌 **Git Commit #13**: `feat(13-event-system): add eventbus` class with and in-memory event bus` — Stage, commit, and push changes
-- [ ] Create event serializer/deserializer (JSON)
-- [ ] Implement event persistence (write events to PostgreSQL)
-- [ ] Create event replay from database
-- [ ] 📌 **Git Commit #14**: `feat(13-event-system): add event serializer/deserializer (json and event persistence (write` — Stage, commit, and push changes
-- [ ] Implement event filtering (by type, agent, task, time range)
-- [ ] Add event batching for high-throughput scenarios
-- [ ] Create event subscriber registry
-- [ ] 📌 **Git Commit #15**: `feat(13-event-system): add event filtering (by and event batching for` — Stage, commit, and push changes
-- [ ] Implement dead-letter handling for failed event processing
-- [ ] Write event validation middleware
-- [ ] Create event type documentation
-- [ ] 📌 **Git Commit #16**: `docs(13-event-system): add dead-letter handling for and event validation middleware` — Stage, commit, and push changes
-- [ ] Write unit tests for EventBus
-- [ ] Write integration tests for Redis-backed EventBus
+- [x] Define all event types as TypeScript enum/union
+- [x] Create event schema/interface (`timestamp`, `event_type`, `agent_id`, `task_id`, `payload`)
+- [x] 📌 **Git Commit #12**: `feat(13-event-system): add define all event types and event schema/interface (`timestamp`` — Stage, commit, and push changes
+- [x] Implement `EventBus` class with pub/sub support
+- [x] Implement in-memory event bus for local mode
+- [x] Implement Redis-backed event bus for distributed mode
+- [x] 📌 **Git Commit #13**: `feat(13-event-system): add eventbus` class with and in-memory event bus` — Stage, commit, and push changes
+- [x] Create event serializer/deserializer (JSON)
+- [x] Implement event persistence (write events to PostgreSQL)
+- [x] Create event replay from database
+- [x] 📌 **Git Commit #14**: `feat(13-event-system): add event serializer/deserializer (json and event persistence (write` — Stage, commit, and push changes
+- [x] Implement event filtering (by type, agent, task, time range)
+- [x] Add event batching for high-throughput scenarios
+- [x] Create event subscriber registry
+- [x] 📌 **Git Commit #15**: `feat(13-event-system): add event filtering (by and event batching for` — Stage, commit, and push changes
+- [x] Implement dead-letter handling for failed event processing
+- [x] Write event validation middleware
+- [x] Create event type documentation
+- [x] 📌 **Git Commit #16**: `docs(13-event-system): add dead-letter handling for and event validation middleware` — Stage, commit, and push changes
+- [x] Write unit tests for EventBus
+- [x] Write integration tests for Redis-backed EventBus
 
 ---
 
