@@ -1,0 +1,31 @@
+{
+  "name": "@ai-office/backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "dev": "tsx watch src/app.ts",
+    "start": "node dist/app.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@ai-office/shared": "file:../shared",
+    "@prisma/client": "^6.2.1",
+    "bullmq": "^5.34.2",
+    "dotenv": "^16.4.7",
+    "ioredis": "^5.4.2",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.11",
+    "prisma": "^6.2.1",
+    "tsx": "^4.19.2"
+  }
+}

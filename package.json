@@ -1,0 +1,41 @@
+{
+  "name": "ai-office-coding-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI engineering organization platform monorepo",
+  "workspaces": [
+    "shared",
+    "backend",
+    "cli",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "setup": "npm install",
+    "dev": "npm run dev -w backend",
+    "db:up": "docker compose up -d postgres redis",
+    "db:down": "docker compose down",
+    "db:generate": "npm run prisma:generate -w backend",
+    "db:migrate": "npm run prisma:migrate -w backend",
+    "db:seed": "npm run prisma:seed -w backend",
+    "security:scan": "node ./scripts/scan-secrets.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.18.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.20.0"
+  }
+}
