@@ -1,0 +1,161 @@
+# ==============================================================================
+# OS Files
+# ==============================================================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# ==============================================================================
+# IDEs & Editors
+# ==============================================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.bak
+.project
+.settings/
+.buildpath
+
+# ==============================================================================
+# Node.js & Web (Frontend / Backend API)
+# ==============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+.eslintcache
+
+# ==============================================================================
+# Python (CLI / Backend ML / Intelligence)
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+venv/
+venv.bak/
+.venvs/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ==============================================================================
+# Environment Variables & Secrets
+# ==============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+# Prevent committing credentials and secrets
+ssh_keys/
+secrets/
+credentials.json
+client_secret.json
+
+# ==============================================================================
+# Databases & Storage
+# ==============================================================================
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+pgdata/
+chromadata/
+redisdata/
+
+# ==============================================================================
+# Docker & DevOps
+# ==============================================================================
+.docker/
+docker-compose.override.yml
+
+# ==============================================================================
+# Terraform
+# ==============================================================================
+.terraform/
+*.tfstate
+*.tfstate.backup
+plan.out
+.terraformrc
+terraform.rc
+
+# ==============================================================================
+# Logs & Temp files
+# ==============================================================================
+logs/
+*.log
+tmp/
+temp/
+/test-results/
+
+# ==============================================================================
+# AI Office System Specific
+# ==============================================================================
+# Any localized workspace run data
+.ai-office/
+workspaces/
+agent_memory/
+replay_cache/
