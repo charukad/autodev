@@ -101,39 +101,39 @@
 
 ### Core Tool Framework
 
-- [ ] Design `Tool` base interface (name, description, input schema, output schema, risk level)
-- [ ] 📌 **Git Commit #17**: `feat(core-tool-framework): add tool` base interface` — Stage, commit, and push changes
-- [ ] Implement `ToolRegistry` — register, discover, and invoke tools
-- [ ] Implement `ToolExecutor` — execute tools with timeout, logging, and error handling
-- [ ] Create tool input validation using JSON schema or Zod
-- [ ] 📌 **Git Commit #18**: `feat(core-tool-framework): add toolregistry` — register, and toolexecutor` — execute` — Stage, commit, and push changes
-- [ ] Create tool output validation
-- [ ] Implement tool execution logging (all calls → `tool_calls` table)
-- [ ] Implement tool timeout with configurable limits
-- [ ] 📌 **Git Commit #19**: `chore(core-tool-framework): add tool output validation and tool execution logging` — Stage, commit, and push changes
-- [ ] Create tool error wrapping and standardized error responses
-- [ ] Implement tool execution sandboxing (restricted file paths, blocked commands)
+- [x] Design `Tool` base interface (name, description, input schema, output schema, risk level)
+
+- [x] Implement `ToolRegistry` — register, discover, and invoke tools
+- [x] Implement `ToolExecutor` — execute tools with timeout, logging, and error handling
+- [x] Create tool input validation using JSON schema or Zod
+
+- [x] Create tool output validation
+- [x] Implement tool execution logging (all calls → `tool_calls` table)
+- [x] Implement tool timeout with configurable limits
+- [x] 📌 **Git Commit #19**: `chore(core-tool-framework): add tool output validation and tool execution logging` — Stage, commit, and push changes
+- [x] Create tool error wrapping and standardized error responses
+- [x] Implement tool execution sandboxing (restricted file paths, blocked commands)
 
 ### Core Tools Implementation
 
-- [ ] Implement `read_file` tool (path → contents)
-- [ ] 📌 **Git Commit #20**: `feat(core-tools-implementation): add read_file` tool (path` — Stage, commit, and push changes
-- [ ] Implement `write_file` tool (path + content → success/failure)
-- [ ] Implement `list_directory` tool (path → directory tree)
-- [ ] Implement `search_code` tool (query → matching files/lines using ripgrep)
-- [ ] 📌 **Git Commit #21**: `feat(core-tools-implementation): add write_file` tool (path and list_directory` tool (path` — Stage, commit, and push changes
-- [ ] Implement `apply_patch` tool (unified diff → success/failure)
-- [ ] Implement `run_command` tool (command → stdout, stderr, exit_code)
-- [ ] Implement `create_file` tool (path + content → success/failure)
-- [ ] 📌 **Git Commit #22**: `feat(core-tools-implementation): add apply_patch` tool (unified and run_command` tool (command` — Stage, commit, and push changes
-- [ ] Implement `delete_file` tool (path → success/failure)
-- [ ] Implement `move_file` tool (source + dest → success/failure)
-- [ ] Implement `get_file_info` tool (path → size, type, modified date)
-- [ ] 📌 **Git Commit #23**: `feat(core-tools-implementation): add delete_file` tool (path and move_file` tool (source` — Stage, commit, and push changes
-- [ ] Add risk classification to each tool (safe / moderate / dangerous)
-- [ ] Write unit tests for every tool
-- [ ] Write integration tests for tool registry and executor
-- [ ] 📌 **Git Commit #24**: `test(core-tools-implementation): add risk classification to and unit tests for` — Stage, commit, and push changes
+- [x] Implement `read_file` tool (path → contents)
+
+- [x] Implement `write_file` tool (path + content → success/failure)
+- [x] Implement `list_directory` tool (path → directory tree)
+- [x] Implement `search_code` tool (query → matching files/lines using ripgrep)
+
+- [x] Implement `apply_patch` tool (unified diff → success/failure)
+- [x] Implement `run_command` tool (command → stdout, stderr, exit_code)
+- [x] Implement `create_file` tool (path + content → success/failure)
+
+- [x] Implement `delete_file` tool (path → success/failure)
+- [x] Implement `move_file` tool (source + dest → success/failure)
+- [x] Implement `get_file_info` tool (path → size, type, modified date)
+
+- [x] Add risk classification to each tool (safe / moderate / dangerous)
+- [x] Write unit tests for every tool
+- [x] Write integration tests for tool registry and executor
+- [x] 📌 Git commits and push completed for Phase 1.4
 
 ---
 
@@ -144,11 +144,11 @@
 - [ ] Set up CLI framework (Commander.js, Oclif, or Yargs)
 - [ ] Create CLI entry point (`ai-office`)
 - [ ] Implement global options (`--verbose`, `--config`, `--project`)
-- [ ] 📌 **Git Commit #25**: `chore(cli-framework-setup): add cli framework and cli entry point` — Stage, commit, and push changes
+
 - [ ] Create configuration file loader (`.ai-office.yaml` or `.ai-office.json`)
 - [ ] Implement config validation
 - [ ] Create CLI output formatting (tables, JSON, plain text)
-- [ ] 📌 **Git Commit #26**: `chore(cli-framework-setup): add configuration file loader and config validation` — Stage, commit, and push changes
+
 - [ ] Implement colored output with chalk/kleur
 - [ ] Create progress spinners and progress bars
 - [ ] Implement logging levels (debug, info, warn, error)
