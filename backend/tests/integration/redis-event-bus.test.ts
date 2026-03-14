@@ -9,13 +9,14 @@ async function isRedisAvailable(): Promise<boolean> {
   const redis = createRedisConnection({
     connectTimeout: 250,
     enableOfflineQueue: false,
-    lazyConnect: false,
+    lazyConnect: true,
     maxRetriesPerRequest: 1,
     retryStrategy: () => null,
   });
   redis.on("error", () => {});
 
   try {
+    await redis.connect();
     const response = await redis.ping();
     return response === "PONG";
   } catch {

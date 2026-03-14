@@ -14,6 +14,10 @@ for (const envFile of candidateEnvFiles) {
 const environmentSchema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    API_HOST: z.string().default("0.0.0.0"),
+    API_PORT: z.coerce.number().int().positive().default(8000),
+    API_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),
+    API_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(60000),
     DATABASE_URL: z.string().optional(),
     POSTGRES_HOST: z.string().default("localhost"),
     POSTGRES_PORT: z.coerce.number().int().positive().default(5434),

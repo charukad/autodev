@@ -190,27 +190,27 @@
 
 ## 1.6 Backend API Server
 
-- [ ] Set up HTTP server (Express, Fastify, or Hono)
-- [ ] Create API route structure (`/api/v1/...`)
-- [ ] 📌 **Git Commit #36**: `feat(16-backend-api-server): add http server and api route structure` — Stage, commit, and push changes
-- [ ] Implement health check endpoint (`GET /health`)
-- [ ] Create session management endpoints (`POST /sessions`, `GET /sessions/:id`, `DELETE /sessions/:id`)
-- [ ] Create task management endpoints (`POST /tasks`, `GET /tasks`, `GET /tasks/:id`, `PATCH /tasks/:id`)
-- [ ] 📌 **Git Commit #37**: `feat(16-backend-api-server): add health check endpoint and session management endpoints` — Stage, commit, and push changes
-- [ ] Create agent endpoints (`GET /agents`, `GET /agents/:id`)
-- [ ] Create event streaming endpoint (WebSocket or SSE)
-- [ ] Create budget endpoints (`GET /budget`, `PATCH /budget`)
-- [ ] 📌 **Git Commit #38**: `feat(16-backend-api-server): add agent endpoints (`get and event streaming endpoint` — Stage, commit, and push changes
-- [ ] Create replay endpoints (`GET /replay/:sessionId`, `GET /replay/:sessionId/frames`)
-- [ ] Implement request validation middleware
-- [ ] Implement error handling middleware
-- [ ] 📌 **Git Commit #39**: `feat(16-backend-api-server): add replay endpoints (`get and request validation middleware` — Stage, commit, and push changes
-- [ ] Implement request logging middleware
-- [ ] Implement rate limiting middleware
-- [ ] Create API documentation (OpenAPI/Swagger)
-- [ ] 📌 **Git Commit #40**: `docs(16-backend-api-server): add request logging middleware and rate limiting middleware` — Stage, commit, and push changes
-- [ ] Write unit tests for all endpoints
-- [ ] Write integration tests for full API flows
+- [x] Set up HTTP server (Express, Fastify, or Hono)
+- [x] Create API route structure (`/api/v1/...`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Implement health check endpoint (`GET /health`)
+- [x] Create session management endpoints (`POST /sessions`, `GET /sessions/:id`, `DELETE /sessions/:id`)
+- [x] Create task management endpoints (`POST /tasks`, `GET /tasks`, `GET /tasks/:id`, `PATCH /tasks/:id`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Create agent endpoints (`GET /agents`, `GET /agents/:id`)
+- [x] Create event streaming endpoint (WebSocket or SSE)
+- [x] Create budget endpoints (`GET /budget`, `PATCH /budget`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Create replay endpoints (`GET /replay/:sessionId`, `GET /replay/:sessionId/frames`)
+- [x] Implement request validation middleware
+- [x] Implement error handling middleware
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Implement request logging middleware
+- [x] Implement rate limiting middleware
+- [x] Create API documentation (OpenAPI/Swagger)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Write unit tests for all endpoints
+- [x] Write integration tests for full API flows
 
 ---
 

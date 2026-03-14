@@ -1,6 +1,6 @@
 # AI Office Coding System
 
-The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 1.5 foundation:
+The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 1.6 foundation:
 
 - Monorepo workspace layout for `backend`, `frontend`, `cli`, and `shared`
 - Shared TypeScript, ESLint, and Prettier configuration
@@ -9,6 +9,7 @@ The AI Office Coding System is a multi-agent software engineering platform that 
 - Event system with typed contracts, in-memory and Redis buses, persistence, replay, and tests
 - Tool runtime with typed tools, sandboxing, execution logging, timeouts, and core file/command tools
 - CLI interface with config loading, command routing, HTTP/WebSocket clients, and command/integration tests
+- Backend API server with Fastify routes, validation, logging, rate limiting, WebSocket event streaming, and Swagger docs
 - Local Docker services for PostgreSQL and Redis
 - Development automation via `Makefile`, Git hooks, and CI
 
@@ -40,6 +41,7 @@ make db-generate
 make db-deploy
 make db-seed
 make verify
+npm run dev -w backend
 ```
 
 ## Useful Commands
@@ -54,7 +56,10 @@ make db-up
 make db-down
 make db-deploy
 make db-seed
+npm run dev -w backend
 ```
+
+Once the backend is running, the REST API is available at `http://localhost:8000/api/v1`, the WebSocket stream is at `ws://localhost:8000/ws/events`, and Swagger UI is served from `http://localhost:8000/docs`.
 
 ## Phase Coverage
 
@@ -65,5 +70,6 @@ Current implementation covers:
 - Phase 1.3 Event System
 - Phase 1.4 Tool Runtime
 - Phase 1.5 CLI Interface
+- Phase 1.6 Backend API Server
 
-The next major steps are the backend API server and orchestration layers.
+The next major step is Phase 2, the agent operating system.
