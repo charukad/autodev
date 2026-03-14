@@ -3,3 +3,6 @@ node_modules
 coverage
 package-lock.json
 backend/prisma/migrations
+feature_list (1).md
+infrormation.md
+project_task_list.md

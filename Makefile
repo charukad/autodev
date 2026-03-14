@@ -2,7 +2,7 @@ SHELL := /bin/bash
 NPM ?= npm
 
 .PHONY: setup install setup-hooks lint format format-check typecheck build test verify \
-	db-up db-down db-generate db-migrate db-seed bootstrap
+	db-up db-down db-generate db-migrate db-deploy db-seed bootstrap
 
 setup: install setup-hooks
 
@@ -31,6 +31,7 @@ test:
 	$(NPM) run test
 
 verify: lint format-check typecheck build
+verify: test
 
 db-up:
 	docker compose up -d postgres redis
@@ -44,7 +45,10 @@ db-generate:
 db-migrate:
 	$(NPM) run db:migrate
 
+db-deploy:
+	$(NPM) run db:deploy
+
 db-seed:
 	$(NPM) run db:seed
 
-bootstrap: db-up db-generate db-migrate db-seed
+bootstrap: db-up db-generate db-deploy db-seed

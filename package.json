@@ -26,6 +26,7 @@
     "db:down": "docker compose down",
     "db:generate": "npm run prisma:generate -w backend",
     "db:migrate": "npm run prisma:migrate -w backend",
+    "db:deploy": "npm run prisma:deploy -w backend",
     "db:seed": "npm run prisma:seed -w backend",
     "security:scan": "node ./scripts/scan-secrets.mjs"
   },

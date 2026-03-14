@@ -6,7 +6,14 @@ import { createRedisConnection } from "../../src/infrastructure/database/redis/r
 const sessionId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
 
 async function isRedisAvailable(): Promise<boolean> {
-  const redis = createRedisConnection();
+  const redis = createRedisConnection({
+    connectTimeout: 250,
+    enableOfflineQueue: false,
+    lazyConnect: false,
+    maxRetriesPerRequest: 1,
+    retryStrategy: () => null,
+  });
+  redis.on("error", () => {});
 
   try {
     const response = await redis.ping();
