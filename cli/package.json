@@ -9,9 +9,19 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "typecheck": "tsc -b --pretty false"
+    "typecheck": "tsc -b --pretty false",
+    "test": "tsx --test tests/**/*.test.ts"
   },
   "dependencies": {
-    "@ai-office/shared": "file:../shared"
+    "@ai-office/shared": "file:../shared",
+    "commander": "^14.0.3",
+    "kleur": "^4.1.5",
+    "ws": "^8.19.0",
+    "yaml": "^2.8.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.21.0"
   }
 }

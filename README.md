@@ -1,6 +1,6 @@
 # AI Office Coding System
 
-The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 1.4 foundation:
+The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 1.5 foundation:
 
 - Monorepo workspace layout for `backend`, `frontend`, `cli`, and `shared`
 - Shared TypeScript, ESLint, and Prettier configuration
@@ -8,6 +8,7 @@ The AI Office Coding System is a multi-agent software engineering platform that 
 - Redis foundation for pub/sub, caching, and queues
 - Event system with typed contracts, in-memory and Redis buses, persistence, replay, and tests
 - Tool runtime with typed tools, sandboxing, execution logging, timeouts, and core file/command tools
+- CLI interface with config loading, command routing, HTTP/WebSocket clients, and command/integration tests
 - Local Docker services for PostgreSQL and Redis
 - Development automation via `Makefile`, Git hooks, and CI
 
@@ -16,7 +17,7 @@ The AI Office Coding System is a multi-agent software engineering platform that 
 ```text
 .
 ├── backend/     Node.js backend foundation and persistence layer
-├── cli/         Future terminal interface package
+├── cli/         Terminal interface package and transport clients
 ├── docs/        Architecture and infrastructure notes
 ├── frontend/    Future dashboard package
 ├── shared/      Shared types and constants
@@ -48,6 +49,7 @@ make lint
 make format
 make typecheck
 make build
+make test
 make db-up
 make db-down
 make db-deploy
@@ -62,5 +64,6 @@ Current implementation covers:
 - Phase 1.2 Data Storage Layer
 - Phase 1.3 Event System
 - Phase 1.4 Tool Runtime
+- Phase 1.5 CLI Interface
 
-The next major steps are the CLI, API server, and orchestration layers.
+The next major steps are the backend API server and orchestration layers.

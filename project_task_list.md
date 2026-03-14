@@ -141,57 +141,50 @@
 
 ### CLI Framework Setup
 
-- [ ] Set up CLI framework (Commander.js, Oclif, or Yargs)
-- [ ] Create CLI entry point (`ai-office`)
-- [ ] Implement global options (`--verbose`, `--config`, `--project`)
+- [x] Set up CLI framework (Commander.js, Oclif, or Yargs)
+- [x] Create CLI entry point (`ai-office`)
+- [x] Implement global options (`--verbose`, `--config`, `--project`)
 
-- [ ] Create configuration file loader (`.ai-office.yaml` or `.ai-office.json`)
-- [ ] Implement config validation
-- [ ] Create CLI output formatting (tables, JSON, plain text)
+- [x] Create configuration file loader (`.ai-office.yaml` or `.ai-office.json`)
+- [x] Implement config validation
+- [x] Create CLI output formatting (tables, JSON, plain text)
 
-- [ ] Implement colored output with chalk/kleur
-- [ ] Create progress spinners and progress bars
-- [ ] Implement logging levels (debug, info, warn, error)
-- [ ] 📌 **Git Commit #27**: `fix(cli-framework-setup): add colored output with and progress spinners and` — Stage, commit, and push changes
+- [x] Implement colored output with chalk/kleur
+- [x] Create progress spinners and progress bars
+- [x] Implement logging levels (debug, info, warn, error)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.5, per request
 
 ### CLI Commands
 
-- [ ] Implement `ai-office init` — initialize project configuration
-- [ ] Implement `ai-office start` — start a new session
-- [ ] Implement `ai-office stop` — end current session
-- [ ] 📌 **Git Commit #28**: `chore(cli-commands): add ai-office init` — and ai-office start` —` — Stage, commit, and push changes
-- [ ] Implement `ai-office status` — show system status
-- [ ] Implement `ai-office task create <description>` — create a new task
-- [ ] Implement `ai-office task list` — list all tasks
-- [ ] 📌 **Git Commit #29**: `feat(cli-commands): add ai-office status` — and ai-office task` — Stage, commit, and push changes
-- [ ] Implement `ai-office task status <id>` — show task details
-- [ ] Implement `ai-office task cancel <id>` — cancel a task
-- [ ] Implement `ai-office agents` — list active agents
-- [ ] 📌 **Git Commit #30**: `feat(cli-commands): add ai-office task status and ai-office task cancel` — Stage, commit, and push changes
-- [ ] Implement `ai-office agents <id>` — show agent details
-- [ ] Implement `ai-office replay` — replay a session
-- [ ] Implement `ai-office replay list` — list saved sessions
-- [ ] 📌 **Git Commit #31**: `feat(cli-commands): add ai-office agents <id> and ai-office replay` —` — Stage, commit, and push changes
-- [ ] Implement `ai-office budget` — show resource budget
-- [ ] Implement `ai-office budget set` — configure budget limits
-- [ ] Implement `ai-office config` — view/edit configuration
-- [ ] 📌 **Git Commit #32**: `chore(cli-commands): add ai-office budget` — and ai-office budget set` — Stage, commit, and push changes
-- [ ] Implement `ai-office logs` — stream system logs
-- [ ] Implement `ai-office version` — show version info
-- [ ] Implement `ai-office help` — show help for all commands
-- [ ] 📌 **Git Commit #33**: `feat(cli-commands): add ai-office logs` — and ai-office version` —` — Stage, commit, and push changes
+- [x] Implement `ai-office init` — initialize project configuration
+- [x] Implement `ai-office start` — start a new session
+- [x] Implement `ai-office stop` — end current session
+- [x] Implement `ai-office status` — show system status
+- [x] Implement `ai-office task create <description>` — create a new task
+- [x] Implement `ai-office task list` — list all tasks
+- [x] Implement `ai-office task status <id>` — show task details
+- [x] Implement `ai-office task cancel <id>` — cancel a task
+- [x] Implement `ai-office agents` — list active agents
+- [x] Implement `ai-office agents <id>` — show agent details
+- [x] Implement `ai-office replay` — replay a session
+- [x] Implement `ai-office replay list` — list saved sessions
+- [x] Implement `ai-office budget` — show resource budget
+- [x] Implement `ai-office budget set` — configure budget limits
+- [x] Implement `ai-office config` — view/edit configuration
+- [x] Implement `ai-office logs` — stream system logs
+- [x] Implement `ai-office version` — show version info
+- [x] Implement `ai-office help` — show help for all commands
 
 ### CLI Communication Layer
 
-- [ ] Create HTTP API client for CLI → backend
-- [ ] Create WebSocket client for real-time event streaming
-- [ ] Implement reconnection logic for WebSocket
-- [ ] 📌 **Git Commit #34**: `feat(cli-communication-layer): add http api client and websocket client for` — Stage, commit, and push changes
-- [ ] Create authentication/API key management
-- [ ] Implement request timeout handling
-- [ ] Write unit tests for all CLI commands
-- [ ] 📌 **Git Commit #35**: `test(cli-communication-layer): add authentication/api key management and request timeout handling` — Stage, commit, and push changes
-- [ ] Write integration tests for CLI → backend communication
+- [x] Create HTTP API client for CLI → backend
+- [x] Create WebSocket client for real-time event streaming
+- [x] Implement reconnection logic for WebSocket
+- [x] Create authentication/API key management
+- [x] Implement request timeout handling
+- [x] Write unit tests for all CLI commands
+- [x] Write integration tests for CLI → backend communication
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.5, per request
 
 ---
 
