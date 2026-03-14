@@ -2,6 +2,7 @@ import { PROJECT_NAME, PROJECT_VERSION } from "@ai-office/shared";
 import { databaseConfig } from "./config/database";
 import { redisConfig } from "./config/redis";
 import { RedisChannels } from "./infrastructure/database/redis/keyspace";
+import { createCoreTools } from "./tools";
 
 export function getFoundationSummary() {
   return {
@@ -24,6 +25,11 @@ export function getFoundationSummary() {
       eventSystem: {
         inMemoryBus: "available",
         redisChannel: RedisChannels.events,
+      },
+      toolRuntime: {
+        registry: "available",
+        coreToolCount: createCoreTools().length,
+        tools: createCoreTools().map((tool) => tool.name),
       },
     },
   };
