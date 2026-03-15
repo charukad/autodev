@@ -15,13 +15,14 @@ export abstract class RoleAgent extends AgentBase {
   }
 
   protected buildExecutionResult(options: {
+    success?: boolean;
     summary: string;
     output: JsonValue;
     metadata?: Record<string, JsonValue>;
     nextRoom?: string;
   }): AgentExecutionResult {
     return {
-      success: true,
+      success: options.success ?? true,
       summary: options.summary,
       output: options.output,
       tokensUsed: estimateTokenUsage(options.summary, options.output, options.metadata),

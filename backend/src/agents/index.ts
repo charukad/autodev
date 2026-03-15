@@ -1,6 +1,7 @@
 export * from "./agent-base";
 export * from "./agent-registry";
 export * from "./agent-store";
+export * from "./code-agent";
 export * from "./errors";
 export * from "./in-memory-agent-store";
 export * from "./lifecycle-manager";
@@ -12,4 +13,5 @@ export * from "./role-agent-factory";
 export * from "./serialization";
 export * from "./state-machine";
 export * from "./task-io";
+export * from "./test-agent";
 export * from "./types";
