@@ -35,3 +35,26 @@ export type ParsedSyntaxTree = {
   rootNode: Parser.SyntaxNode;
   hasErrors: boolean;
 };
+
+export type ExtractedSymbolKind = "function" | "method" | "class" | "struct";
+
+export type ExtractedCodeSymbol = {
+  name: string;
+  kind: ExtractedSymbolKind;
+  languageId: SupportedLanguageId;
+  sourcePath: string;
+  nodeType: string;
+  startLine: number;
+  endLine: number;
+  startColumn: number;
+  endColumn: number;
+  parentName?: string;
+};
+
+export type ParsedCodeFile = ParsedSyntaxTree & {
+  symbols: ExtractedCodeSymbol[];
+  functions: ExtractedCodeSymbol[];
+  methods: ExtractedCodeSymbol[];
+  classes: ExtractedCodeSymbol[];
+  structs: ExtractedCodeSymbol[];
+};
