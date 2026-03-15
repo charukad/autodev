@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { AgentState } from "@prisma/client";
-import { AgentBase } from "./agent-base";
 import { AgentNotFoundError, AgentRoleLimitError } from "./errors";
+import { createDefaultAgentFactory } from "./role-agent-factory";
 import { cloneAgentSnapshot, createDefaultAgentContext } from "./serialization";
 import type { AgentStore } from "./agent-store";
 import type {
@@ -34,8 +34,7 @@ export class AgentRegistry {
       ...(options.eventBus ? { eventBus: options.eventBus } : {}),
       ...(options.now ? { now: options.now } : {}),
     };
-    this.factory =
-      options.factory ?? ((snapshot, dependencies) => new AgentBase(snapshot, dependencies));
+    this.factory = options.factory ?? createDefaultAgentFactory();
   }
 
   async spawn(input: AgentRegistrationInput): Promise<Agent> {
