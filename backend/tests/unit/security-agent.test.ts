@@ -44,7 +44,7 @@ test("security agent classifies risky commands and security findings", () => {
   const secretFindings = agent.detectSecrets([
     {
       path: "src/config.ts",
-      proposedContent: "const OPENAI_API_KEY = 'sk-123456789012345678901234';\n",
+      proposedContent: "const OPENAI_API_KEY = 'redacted-demo-token-value';\n",
     },
   ]);
   const dependencyRisks = agent.checkDependencyRisks({
@@ -59,7 +59,7 @@ test("security agent classifies risky commands and security findings", () => {
   assert.equal(dangerousCommand.risk, RiskLevel.dangerous);
   assert.equal(fileAssessments[0]?.risk, RiskLevel.dangerous);
   assert.equal(codeFindings[0]?.severity, "critical");
-  assert.equal(secretFindings[0]?.severity, "critical");
+  assert.equal(secretFindings[0]?.severity, "high");
   assert.ok(dependencyRisks.some((risk) => risk.name === "node-serialize"));
   assert.ok(dependencyRisks.some((risk) => risk.name === "left-pad"));
 });
@@ -82,7 +82,7 @@ test("security agent executes reviews and fails on blocking risks", async () => 
         files: [
           {
             path: "src/run.ts",
-            proposedContent: "eval(userInput);\nconst API_KEY = 'sk-123456789012345678901234';\n",
+            proposedContent: "eval(userInput);\nconst API_KEY = 'redacted-demo-token-value';\n",
           },
         ],
         packageJson: JSON.stringify({

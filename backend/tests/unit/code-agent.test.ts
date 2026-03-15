@@ -82,7 +82,7 @@ test("code agent generates compact patch previews for proposed changes", () => {
   const patch = agent.generatePatchPreview(
     "src/routes.ts",
     "export const routes = [];\n",
-    "export const routes = [\"/dashboard\"];\n"
+    'export const routes = ["/dashboard"];\n'
   );
 
   assert.equal(patch.hasChanges, true);
@@ -108,7 +108,7 @@ test("code agent executes tasks and stores the latest execution plan", async () 
           {
             path: "src/routes.ts",
             content: "export const routes = [];\n",
-            proposedContent: "export const routes = [\"/dashboard\"];\n",
+            proposedContent: 'export const routes = ["/dashboard"];\n',
           },
         ],
       },

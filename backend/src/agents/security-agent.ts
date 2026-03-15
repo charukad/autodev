@@ -266,7 +266,9 @@ export class SecurityAgent extends RoleAgent {
     const hasBlockingRisk =
       commandAssessments.some((assessment) => assessment.risk === RiskLevel.dangerous) ||
       fileAccessAssessments.some((assessment) => assessment.risk === RiskLevel.dangerous) ||
-      codeFindings.some((finding) => finding.severity === "high" || finding.severity === "critical") ||
+      codeFindings.some(
+        (finding) => finding.severity === "high" || finding.severity === "critical"
+      ) ||
       secretFindings.length > 0 ||
       dependencyRisks.some((risk) => risk.risk === RiskLevel.dangerous);
 
@@ -342,7 +344,9 @@ const secretRules: Array<[RegExp, string, SecurityFinding["severity"], string]> 
 const knownRiskyPackages = new Set(["event-stream", "node-serialize"]);
 
 function parsePackageJsonFromInput(input: JsonRecord): PackageJsonRecord | undefined {
-  const packageJsonFile = readTaskFiles(input).find((file) => normalizePath(file.path) === "package.json");
+  const packageJsonFile = readTaskFiles(input).find(
+    (file) => normalizePath(file.path) === "package.json"
+  );
   const contents = packageJsonFile?.content ?? readString(input, "packageJson");
 
   if (!contents) {

@@ -1,11 +1,6 @@
 import { AgentRole, TaskPriority } from "@prisma/client";
 import { RoleAgent } from "./role-agent";
-import {
-  readString,
-  readStringArray,
-  readTaskFiles,
-  type JsonRecord,
-} from "./task-io";
+import { readString, readStringArray, readTaskFiles, type JsonRecord } from "./task-io";
 import type { AgentExecutionContext } from "./types";
 
 const testAgentSystemPrompt = [
@@ -111,7 +106,8 @@ export class TestAgent extends RoleAgent {
         command: "npm",
         arguments: ["test", ...(targetFiles.length > 0 ? ["--", ...targetFiles] : [])],
         framework: inferFrameworkFromPackageJson(packageJson),
-        rationale: "package.json exposes a test script, so the agent should reuse the project runner.",
+        rationale:
+          "package.json exposes a test script, so the agent should reuse the project runner.",
       };
     }
 
@@ -153,18 +149,9 @@ export class TestAgent extends RoleAgent {
 
   parseTestResults(rawOutput: string): ParsedTestResults {
     const framework = inferFrameworkFromOutput(rawOutput);
-    const passed = extractCount(rawOutput, [
-      /(\d+)\s+passed/i,
-      /Tests?\s+(\d+)\s+passed/i,
-    ]);
-    const failed = extractCount(rawOutput, [
-      /(\d+)\s+failed/i,
-      /Tests?\s+(\d+)\s+failed/i,
-    ]);
-    const skipped = extractCount(rawOutput, [
-      /(\d+)\s+skipped/i,
-      /(\d+)\s+todo/i,
-    ]);
+    const passed = extractCount(rawOutput, [/(\d+)\s+passed/i, /Tests?\s+(\d+)\s+passed/i]);
+    const failed = extractCount(rawOutput, [/(\d+)\s+failed/i, /Tests?\s+(\d+)\s+failed/i]);
+    const skipped = extractCount(rawOutput, [/(\d+)\s+skipped/i, /(\d+)\s+todo/i]);
     const failingTests = [
       ...rawOutput.matchAll(/^[×x]\s+(.+)$/gim),
       ...rawOutput.matchAll(/^FAIL\s+(.+)$/gim),
@@ -196,7 +183,12 @@ export class TestAgent extends RoleAgent {
       branches = extractPercentage(coverageText, /branches?\s*[:|]\s*(\d+(?:\.\d+)?)/i);
       functions = extractPercentage(coverageText, /func(?:tions?)?\s*[:|]\s*(\d+(?:\.\d+)?)/i);
       statements = extractPercentage(coverageText, /stmts?|statements?\s*[:|]\s*(\d+(?:\.\d+)?)/i);
-    } else if (coverageRecord && typeof coverageRecord === "object" && coverageRecord !== null && !Array.isArray(coverageRecord)) {
+    } else if (
+      coverageRecord &&
+      typeof coverageRecord === "object" &&
+      coverageRecord !== null &&
+      !Array.isArray(coverageRecord)
+    ) {
       const record = coverageRecord as Record<string, unknown>;
       lines = toFiniteNumber(record.lines);
       branches = toFiniteNumber(record.branches);
@@ -250,7 +242,8 @@ export class TestAgent extends RoleAgent {
         category: "assertion-failure",
         summary: "The implementation behavior diverges from the expected assertions.",
         suggestedOwner: AgentRole.code,
-        actionableNextStep: "Review the failing expectation and align the implementation or the test fixture.",
+        actionableNextStep:
+          "Review the failing expectation and align the implementation or the test fixture.",
       };
     }
 

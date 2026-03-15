@@ -8,6 +8,7 @@ export * from "./in-memory-agent-store";
 export * from "./lifecycle-manager";
 export * from "./planner-agent";
 export * from "./prisma-agent-store";
+export * from "./project-manager-agent";
 export * from "./repo-scanner-agent";
 export * from "./role-agent";
 export * from "./role-agent-factory";

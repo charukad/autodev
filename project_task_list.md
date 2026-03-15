@@ -7,10 +7,10 @@
 
 # Current Status
 
-- [x] Completed phases: `1.1` through `1.6`, plus `2.1`
-- [x] Latest completed phase: `2.1 Agent Core Framework`
-- [x] Backend foundation and agent core framework are implemented in the repository
-- [ ] Next phase not started: `2.2 Agent Roles Implementation`
+- [x] Completed phases: `1.1` through `1.6`, plus `2.1` and `2.2`
+- [x] Latest completed phase: `2.2 Agent Roles Implementation`
+- [x] Backend foundation and role-specific agent system are implemented in the repository
+- [ ] Next phase not started: `2.3 Task Management System`
 
 ---
 
@@ -278,99 +278,99 @@
 
 ### Planner Agent
 
-- [ ] Create `PlannerAgent` class extending `Agent`
-- [ ] 📌 **Git Commit #49**: `feat(planner-agent): add planneragent` class extending` — Stage, commit, and push changes
-- [ ] Implement user intent interpretation (parse natural language into structured intent)
-- [ ] Implement task graph generation (build DAG from intent)
-- [ ] Implement agent assignment logic (match task types to agent roles)
-- [ ] 📌 **Git Commit #50**: `feat(planner-agent): add user intent interpretation and task graph generation` — Stage, commit, and push changes
-- [ ] Implement task prioritization
-- [ ] Implement dependency ordering
-- [ ] Create Planner-specific system prompt
-- [ ] 📌 **Git Commit #51**: `feat(planner-agent): add task prioritization and dependency ordering` — Stage, commit, and push changes
-- [ ] Write unit tests for Planner Agent
+- [x] Create `PlannerAgent` class extending `Agent`
+- [x] 📌 **Git Commit #49**: `feat: add the planner agent` — Stage, commit, and push changes
+- [x] Implement user intent interpretation (parse natural language into structured intent)
+- [x] Implement task graph generation (build DAG from intent)
+- [x] Implement agent assignment logic (match task types to agent roles)
+- [x] 📌 **Git Commit #50**: `feat: add the planner agent` — Stage, commit, and push changes
+- [x] Implement task prioritization
+- [x] Implement dependency ordering
+- [x] Create Planner-specific system prompt
+- [x] 📌 **Git Commit #51**: `feat: add the planner agent` — Stage, commit, and push changes
+- [x] Write unit tests for Planner Agent
 
 ### Repo Scanner Agent
 
-- [ ] Create `RepoScannerAgent` class extending `Agent`
-- [ ] Implement directory traversal and structure analysis
-- [ ] 📌 **Git Commit #52**: `feat(repo-scanner-agent): add reposcanneragent` class extending and directory traversal and` — Stage, commit, and push changes
-- [ ] Implement framework/language detection (package.json, requirements.txt, go.mod, etc.)
-- [ ] Implement entry point identification (main files, index files)
-- [ ] Implement configuration file detection (.env, yaml, json configs)
-- [ ] 📌 **Git Commit #53**: `chore(repo-scanner-agent): add framework/language detection (package.json, and entry point identification` — Stage, commit, and push changes
-- [ ] Implement dependency listing
-- [ ] Create Repo Scanner-specific system prompt
-- [ ] Write unit tests for Repo Scanner Agent
-- [ ] 📌 **Git Commit #54**: `test(repo-scanner-agent): add dependency listing and repo scanner-specific system` — Stage, commit, and push changes
+- [x] Create `RepoScannerAgent` class extending `Agent`
+- [x] Implement directory traversal and structure analysis
+- [x] 📌 **Git Commit #52**: `feat: add the repo scanner agent` — Stage, commit, and push changes
+- [x] Implement framework/language detection (package.json, requirements.txt, go.mod, etc.)
+- [x] Implement entry point identification (main files, index files)
+- [x] Implement configuration file detection (.env, yaml, json configs)
+- [x] 📌 **Git Commit #53**: `feat: add the repo scanner agent` — Stage, commit, and push changes
+- [x] Implement dependency listing
+- [x] Create Repo Scanner-specific system prompt
+- [x] Write unit tests for Repo Scanner Agent
+- [x] 📌 **Git Commit #54**: `feat: add the repo scanner agent` — Stage, commit, and push changes
 
 ### Code Agent
 
-- [ ] Create `CodeAgent` class extending `Agent`
-- [ ] Implement code generation from task description
-- [ ] Implement code modification (read → understand → modify)
-- [ ] 📌 **Git Commit #55**: `feat(code-agent): add codeagent` class extending and code generation from` — Stage, commit, and push changes
-- [ ] Implement patch/diff generation
-- [ ] Implement code formatting integration
-- [ ] Implement multi-file change coordination
-- [ ] 📌 **Git Commit #56**: `feat(code-agent): add patch/diff generation and code formatting integration` — Stage, commit, and push changes
-- [ ] Create Code Agent-specific system prompt
-- [ ] Write unit tests for Code Agent
+- [x] Create `CodeAgent` class extending `Agent`
+- [x] Implement code generation from task description
+- [x] Implement code modification (read → understand → modify)
+- [x] 📌 **Git Commit #55**: `feat: add the code and test agents` — Stage, commit, and push changes
+- [x] Implement patch/diff generation
+- [x] Implement code formatting integration
+- [x] Implement multi-file change coordination
+- [x] 📌 **Git Commit #56**: `feat: add the code and test agents` — Stage, commit, and push changes
+- [x] Create Code Agent-specific system prompt
+- [x] Write unit tests for Code Agent
 
 ### Test Agent
 
-- [ ] Create `TestAgent` class extending `Agent`
-- [ ] 📌 **Git Commit #57**: `test(test-agent): add testagent` class extending` — Stage, commit, and push changes
-- [ ] Implement test generation from code analysis
-- [ ] Implement test suite execution
-- [ ] Implement test result parsing
-- [ ] 📌 **Git Commit #58**: `test(test-agent): add test generation from and test suite execution` — Stage, commit, and push changes
-- [ ] Implement coverage reporting
-- [ ] Implement test failure analysis
-- [ ] Create Test Agent-specific system prompt
-- [ ] 📌 **Git Commit #59**: `test(test-agent): add coverage reporting and test failure analysis` — Stage, commit, and push changes
-- [ ] Write unit tests for Test Agent
+- [x] Create `TestAgent` class extending `Agent`
+- [x] 📌 **Git Commit #57**: `feat: add the code and test agents` — Stage, commit, and push changes
+- [x] Implement test generation from code analysis
+- [x] Implement test suite execution
+- [x] Implement test result parsing
+- [x] 📌 **Git Commit #58**: `feat: add the code and test agents` — Stage, commit, and push changes
+- [x] Implement coverage reporting
+- [x] Implement test failure analysis
+- [x] Create Test Agent-specific system prompt
+- [x] 📌 **Git Commit #59**: `feat: add the code and test agents` — Stage, commit, and push changes
+- [x] Write unit tests for Test Agent
 
 ### Debug Agent
 
-- [ ] Create `DebugAgent` class extending `Agent`
-- [ ] Implement error log analysis
-- [ ] 📌 **Git Commit #60**: `fix(debug-agent): add debugagent` class extending and error log analysis` — Stage, commit, and push changes
-- [ ] Implement stack trace parsing
-- [ ] Implement root cause identification
-- [ ] Implement fix suggestion generation
-- [ ] 📌 **Git Commit #61**: `fix(debug-agent): add stack trace parsing and root cause identification` — Stage, commit, and push changes
-- [ ] Implement fix application and verification
-- [ ] Create Debug Agent-specific system prompt
-- [ ] Write unit tests for Debug Agent
-- [ ] 📌 **Git Commit #62**: `fix(debug-agent): add fix application and and debug agent-specific system` — Stage, commit, and push changes
+- [x] Create `DebugAgent` class extending `Agent`
+- [x] Implement error log analysis
+- [x] 📌 **Git Commit #60**: `feat: add the debug and security agents` — Stage, commit, and push changes
+- [x] Implement stack trace parsing
+- [x] Implement root cause identification
+- [x] Implement fix suggestion generation
+- [x] 📌 **Git Commit #61**: `feat: add the debug and security agents` — Stage, commit, and push changes
+- [x] Implement fix application and verification
+- [x] Create Debug Agent-specific system prompt
+- [x] Write unit tests for Debug Agent
+- [x] 📌 **Git Commit #62**: `feat: add the debug and security agents` — Stage, commit, and push changes
 
 ### Security Agent
 
-- [ ] Create `SecurityAgent` class extending `Agent`
-- [ ] Implement command risk evaluation
-- [ ] Implement file access risk assessment
-- [ ] 📌 **Git Commit #63**: `feat(security-agent): add securityagent` class extending and command risk evaluation` — Stage, commit, and push changes
-- [ ] Implement code vulnerability scanning
-- [ ] Implement secret detection in code changes
-- [ ] Implement dependency vulnerability checking
-- [ ] 📌 **Git Commit #64**: `feat(security-agent): add code vulnerability scanning and secret detection in` — Stage, commit, and push changes
-- [ ] Create Security Agent-specific system prompt
-- [ ] Write unit tests for Security Agent
+- [x] Create `SecurityAgent` class extending `Agent`
+- [x] Implement command risk evaluation
+- [x] Implement file access risk assessment
+- [x] 📌 **Git Commit #63**: `feat: add the debug and security agents` — Stage, commit, and push changes
+- [x] Implement code vulnerability scanning
+- [x] Implement secret detection in code changes
+- [x] Implement dependency vulnerability checking
+- [x] 📌 **Git Commit #64**: `feat: add the debug and security agents` — Stage, commit, and push changes
+- [x] Create Security Agent-specific system prompt
+- [x] Write unit tests for Security Agent
 
 ### Project Manager Agent
 
-- [ ] Create `ProjectManagerAgent` class extending `Agent`
-- [ ] 📌 **Git Commit #65**: `feat(project-manager-agent): add projectmanageragent` class extending` — Stage, commit, and push changes
-- [ ] Implement resource allocation across agents
-- [ ] Implement progress monitoring
-- [ ] Implement priority adjustment based on progress
-- [ ] 📌 **Git Commit #66**: `feat(project-manager-agent): add resource allocation across and progress monitoring` — Stage, commit, and push changes
-- [ ] Implement bottleneck detection
-- [ ] Implement status report generation
-- [ ] Create PM Agent-specific system prompt
-- [ ] 📌 **Git Commit #67**: `feat(project-manager-agent): add bottleneck detection and status report generation` — Stage, commit, and push changes
-- [ ] Write unit tests for PM Agent
+- [x] Create `ProjectManagerAgent` class extending `Agent`
+- [x] 📌 **Git Commit #65**: `feat: complete phase 2.2 role agents and docs` — Stage, commit, and push changes
+- [x] Implement resource allocation across agents
+- [x] Implement progress monitoring
+- [x] Implement priority adjustment based on progress
+- [x] 📌 **Git Commit #66**: `feat: complete phase 2.2 role agents and docs` — Stage, commit, and push changes
+- [x] Implement bottleneck detection
+- [x] Implement status report generation
+- [x] Create PM Agent-specific system prompt
+- [x] 📌 **Git Commit #67**: `feat: complete phase 2.2 role agents and docs` — Stage, commit, and push changes
+- [x] Write unit tests for PM Agent
 
 ---
 

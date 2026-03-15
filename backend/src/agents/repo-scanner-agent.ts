@@ -117,8 +117,17 @@ export class RepoScannerAgent extends RoleAgent {
       snapshot.files
         .map((file) => file.split("/")[0] ?? "")
         .filter((segment) =>
-          ["apps", "backend", "cli", "frontend", "lib", "packages", "services", "shared", "src"]
-            .includes(segment)
+          [
+            "apps",
+            "backend",
+            "cli",
+            "frontend",
+            "lib",
+            "packages",
+            "services",
+            "shared",
+            "src",
+          ].includes(segment)
         )
     );
 
@@ -137,7 +146,10 @@ export class RepoScannerAgent extends RoleAgent {
       technologies.set(`${technology.kind}:${technology.name}`, technology);
     };
 
-    if (snapshot.files.some((file) => file.endsWith(".ts") || file.endsWith(".tsx")) || snapshot.files.includes("tsconfig.json")) {
+    if (
+      snapshot.files.some((file) => file.endsWith(".ts") || file.endsWith(".tsx")) ||
+      snapshot.files.includes("tsconfig.json")
+    ) {
       addTechnology({
         kind: "language",
         name: "TypeScript",
@@ -146,7 +158,10 @@ export class RepoScannerAgent extends RoleAgent {
       });
     }
 
-    if (snapshot.files.some((file) => file.endsWith(".js") || file.endsWith(".jsx")) || snapshot.files.includes("package.json")) {
+    if (
+      snapshot.files.some((file) => file.endsWith(".js") || file.endsWith(".jsx")) ||
+      snapshot.files.includes("package.json")
+    ) {
       addTechnology({
         kind: "language",
         name: "JavaScript",
@@ -155,7 +170,11 @@ export class RepoScannerAgent extends RoleAgent {
       });
     }
 
-    if (snapshot.files.some((file) => file.endsWith(".py")) || snapshot.files.includes("requirements.txt") || snapshot.files.includes("pyproject.toml")) {
+    if (
+      snapshot.files.some((file) => file.endsWith(".py")) ||
+      snapshot.files.includes("requirements.txt") ||
+      snapshot.files.includes("pyproject.toml")
+    ) {
       addTechnology({
         kind: "language",
         name: "Python",
@@ -173,7 +192,10 @@ export class RepoScannerAgent extends RoleAgent {
       });
     }
 
-    if (snapshot.files.some((file) => file.endsWith(".rs")) || snapshot.files.includes("Cargo.toml")) {
+    if (
+      snapshot.files.some((file) => file.endsWith(".rs")) ||
+      snapshot.files.includes("Cargo.toml")
+    ) {
       addTechnology({
         kind: "language",
         name: "Rust",
@@ -442,13 +464,9 @@ function inferDirectories(filePaths: string[]): string[] {
 
 function shouldReadManifest(filePath: string): boolean {
   const normalizedPath = normalizePath(filePath);
-  return [
-    "package.json",
-    "requirements.txt",
-    "go.mod",
-    "Cargo.toml",
-    "pyproject.toml",
-  ].includes(path.posix.basename(normalizedPath));
+  return ["package.json", "requirements.txt", "go.mod", "Cargo.toml", "pyproject.toml"].includes(
+    path.posix.basename(normalizedPath)
+  );
 }
 
 function parsePackageJson(contents: string | undefined): PackageJsonRecord | undefined {

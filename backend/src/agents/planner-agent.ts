@@ -296,7 +296,9 @@ export class PlannerAgent extends RoleAgent {
 
 function inferDeliverables(request: string, input: JsonRecord): string[] {
   const seeded = readStringArray(input, "deliverables");
-  const matches = request.match(/\b(?:build|create|implement|fix|refactor|test|scan|secure)\b[^.!,;]*/gi);
+  const matches = request.match(
+    /\b(?:build|create|implement|fix|refactor|test|scan|secure)\b[^.!,;]*/gi
+  );
 
   return uniqueStrings([...(matches ?? []), ...seeded]).slice(0, 8);
 }
@@ -325,7 +327,11 @@ function inferFocusAreas(request: string, input: JsonRecord): string[] {
   const normalized = request.toLowerCase();
   const focusAreas = new Set<string>(readStringArray(input, "focusAreas"));
 
-  if (normalized.includes("scan") || normalized.includes("codebase") || normalized.includes("repo")) {
+  if (
+    normalized.includes("scan") ||
+    normalized.includes("codebase") ||
+    normalized.includes("repo")
+  ) {
     focusAreas.add("repository-discovery");
   }
 
@@ -337,11 +343,19 @@ function inferFocusAreas(request: string, input: JsonRecord): string[] {
     focusAreas.add("stability");
   }
 
-  if (normalized.includes("security") || normalized.includes("secret") || normalized.includes("vulnerability")) {
+  if (
+    normalized.includes("security") ||
+    normalized.includes("secret") ||
+    normalized.includes("vulnerability")
+  ) {
     focusAreas.add("security");
   }
 
-  if (normalized.includes("plan") || normalized.includes("roadmap") || normalized.includes("break down")) {
+  if (
+    normalized.includes("plan") ||
+    normalized.includes("roadmap") ||
+    normalized.includes("break down")
+  ) {
     focusAreas.add("coordination");
   }
 
@@ -442,7 +456,11 @@ function inferUrgency(request: string, input: JsonRecord): IntentUrgency {
     return "critical";
   }
 
-  if (normalized.includes("important") || normalized.includes("soon") || normalized.includes("high priority")) {
+  if (
+    normalized.includes("important") ||
+    normalized.includes("soon") ||
+    normalized.includes("high priority")
+  ) {
     return "high";
   }
 
@@ -477,7 +495,9 @@ function buildCodeTaskDescription(intent: PlannerIntent): string {
   const fileHint =
     intent.mentionedFiles.length > 0 ? ` Focus on ${intent.mentionedFiles.join(", ")}.` : "";
   const constraintHint =
-    intent.constraints.length > 0 ? ` Respect these constraints: ${intent.constraints.join("; ")}.` : "";
+    intent.constraints.length > 0
+      ? ` Respect these constraints: ${intent.constraints.join("; ")}.`
+      : "";
 
   return `Implement the requested outcome: ${intent.objective}.${fileHint}${constraintHint}`.trim();
 }

@@ -1,8 +1,5 @@
 import { RoleAgent } from "./role-agent";
-import {
-  readString,
-  type JsonRecord,
-} from "./task-io";
+import { readString, type JsonRecord } from "./task-io";
 import type { AgentExecutionContext } from "./types";
 
 const debugAgentSystemPrompt = [
@@ -54,9 +51,16 @@ export class DebugAgent extends RoleAgent {
   analyzeErrorLogs(rawLogs: string): ErrorLogSignal[] {
     const signals: ErrorLogSignal[] = [];
 
-    for (const line of rawLogs.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean)) {
+    for (const line of rawLogs
+      .split(/\r?\n/)
+      .map((entry) => entry.trim())
+      .filter(Boolean)) {
       const lowered = line.toLowerCase();
-      if (lowered.includes("error") || lowered.includes("exception") || lowered.includes("failed")) {
+      if (
+        lowered.includes("error") ||
+        lowered.includes("exception") ||
+        lowered.includes("failed")
+      ) {
         signals.push({
           level: "error",
           message: line,
@@ -160,7 +164,8 @@ export class DebugAgent extends RoleAgent {
     return {
       category: "unknown",
       ...(applicationFrame ? { likelySource: applicationFrame.filePath } : {}),
-      explanation: "The current signals are insufficient for a stronger diagnosis, but the first application frame is the best place to inspect.",
+      explanation:
+        "The current signals are insufficient for a stronger diagnosis, but the first application frame is the best place to inspect.",
       confidence: applicationFrame ? "medium" : "low",
     };
   }
@@ -171,7 +176,8 @@ export class DebugAgent extends RoleAgent {
         return [
           {
             title: "Repair module resolution",
-            description: "Verify the import path, the file move history, and whether the dependency is installed in the active workspace.",
+            description:
+              "Verify the import path, the file move history, and whether the dependency is installed in the active workspace.",
             targetFiles: rootCause.likelySource ? [rootCause.likelySource] : [],
             verificationSteps: [
               "Run the failing command again after correcting the import or dependency.",
@@ -183,7 +189,8 @@ export class DebugAgent extends RoleAgent {
         return [
           {
             title: "Guard the failing access path",
-            description: "Add validation or a default value before the property access that currently crashes.",
+            description:
+              "Add validation or a default value before the property access that currently crashes.",
             targetFiles: rootCause.likelySource ? [rootCause.likelySource] : [],
             verificationSteps: [
               "Reproduce the failing input locally.",
@@ -195,7 +202,8 @@ export class DebugAgent extends RoleAgent {
         return [
           {
             title: "Align implementation with the failing assertion",
-            description: "Compare the expected output with the current implementation and update the logic or fixture that drifted.",
+            description:
+              "Compare the expected output with the current implementation and update the logic or fixture that drifted.",
             targetFiles: rootCause.likelySource ? [rootCause.likelySource] : [],
             verificationSteps: [
               "Run the targeted failing test first.",
@@ -207,7 +215,8 @@ export class DebugAgent extends RoleAgent {
         return [
           {
             title: "Reduce or eliminate the blocking path",
-            description: "Inspect loops, retries, network waits, and unresolved promises around the failing frame.",
+            description:
+              "Inspect loops, retries, network waits, and unresolved promises around the failing frame.",
             targetFiles: rootCause.likelySource ? [rootCause.likelySource] : [],
             verificationSteps: [
               "Re-run with timing logs enabled.",
@@ -219,7 +228,8 @@ export class DebugAgent extends RoleAgent {
         return [
           {
             title: "Inspect the first application frame",
-            description: "Use the earliest non-library stack frame as the starting point for manual debugging.",
+            description:
+              "Use the earliest non-library stack frame as the starting point for manual debugging.",
             targetFiles: rootCause.likelySource ? [rootCause.likelySource] : [],
             verificationSteps: [
               "Reproduce the failure with verbose logging enabled.",

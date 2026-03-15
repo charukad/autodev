@@ -88,11 +88,12 @@ export class CodeAgent extends RoleAgent {
         action,
         summary: buildActionSummary(request, normalizedPath, action),
         reason: buildActionReason(normalizedPath, action),
-        dependsOn: normalizedPath.includes(".test.") || normalizedPath.includes(".spec.")
-          ? targetFiles
-              .map(normalizePath)
-              .filter((filePath) => filePath !== normalizedPath && !isTestFile(filePath))
-          : [],
+        dependsOn:
+          normalizedPath.includes(".test.") || normalizedPath.includes(".spec.")
+            ? targetFiles
+                .map(normalizePath)
+                .filter((filePath) => filePath !== normalizedPath && !isTestFile(filePath))
+            : [],
       };
     });
   }
@@ -172,12 +173,16 @@ export class CodeAgent extends RoleAgent {
     }
 
     if (changedFiles.some((filePath) => filePath.endsWith(".py"))) {
-      commands.push(`ruff format ${changedFiles.filter((filePath) => filePath.endsWith(".py")).join(" ")}`);
+      commands.push(
+        `ruff format ${changedFiles.filter((filePath) => filePath.endsWith(".py")).join(" ")}`
+      );
       reasoning.push("Python files need formatter coverage.");
     }
 
     if (changedFiles.some((filePath) => filePath.endsWith(".go"))) {
-      commands.push(`gofmt -w ${changedFiles.filter((filePath) => filePath.endsWith(".go")).join(" ")}`);
+      commands.push(
+        `gofmt -w ${changedFiles.filter((filePath) => filePath.endsWith(".go")).join(" ")}`
+      );
       reasoning.push("Go files should be normalized with gofmt.");
     }
 
@@ -264,7 +269,10 @@ function inferRequestedAction(request: string): FileActionType {
   return "modify";
 }
 
-function resolveAction(requestedAction: FileActionType, fileRecord: TaskFileSnapshot | undefined): FileActionType {
+function resolveAction(
+  requestedAction: FileActionType,
+  fileRecord: TaskFileSnapshot | undefined
+): FileActionType {
   if (requestedAction === "delete") {
     return "delete";
   }
@@ -364,12 +372,7 @@ function generateArtifactContent(request: string, filePath: string, language: st
   }
 
   if ((language === "typescript" || language === "javascript") && classMatch?.[1]) {
-    return [
-      `export class ${classMatch[1]} {`,
-      "  constructor() {}",
-      "}",
-      "",
-    ].join("\n");
+    return [`export class ${classMatch[1]} {`, "  constructor() {}", "}", ""].join("\n");
   }
 
   if (language === "markdown") {
@@ -381,7 +384,9 @@ function generateArtifactContent(request: string, filePath: string, language: st
 
 function parsePackageJsonFromInput(input: JsonRecord): PackageJsonRecord | undefined {
   const taskFiles = readTaskFiles(input);
-  const packageJsonFromFiles = taskFiles.find((file) => normalizePath(file.path) === "package.json");
+  const packageJsonFromFiles = taskFiles.find(
+    (file) => normalizePath(file.path) === "package.json"
+  );
   const packageJsonContents = packageJsonFromFiles?.content ?? readString(input, "packageJson");
 
   if (!packageJsonContents) {
@@ -400,7 +405,11 @@ type PackageJsonRecord = {
 };
 
 function rankFileForChange(filePath: string): number {
-  if (filePath.includes("config") || filePath.endsWith("package.json") || filePath.endsWith("tsconfig.json")) {
+  if (
+    filePath.includes("config") ||
+    filePath.endsWith("package.json") ||
+    filePath.endsWith("tsconfig.json")
+  ) {
     return 1;
   }
 

@@ -3,6 +3,7 @@ import { AgentBase } from "./agent-base";
 import { CodeAgent } from "./code-agent";
 import { DebugAgent } from "./debug-agent";
 import { PlannerAgent } from "./planner-agent";
+import { ProjectManagerAgent } from "./project-manager-agent";
 import { RepoScannerAgent } from "./repo-scanner-agent";
 import { SecurityAgent } from "./security-agent";
 import { TestAgent } from "./test-agent";
@@ -17,6 +18,8 @@ export function createDefaultAgentFactory(): AgentFactory {
         return new CodeAgent(snapshot, dependencies);
       case AgentRole.debug:
         return new DebugAgent(snapshot, dependencies);
+      case AgentRole.pm:
+        return new ProjectManagerAgent(snapshot, dependencies);
       case AgentRole.repo_scanner:
         return new RepoScannerAgent(snapshot, dependencies);
       case AgentRole.security:
