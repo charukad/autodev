@@ -55,6 +55,11 @@ export function getFoundationSummary() {
         taskGraph: "available",
         taskScheduler: "available",
       },
+      orchestrationEngine: {
+        workflowCoordinator: "available",
+        toolDelegation: "available",
+        progressReporting: "available",
+      },
     },
   };
 }

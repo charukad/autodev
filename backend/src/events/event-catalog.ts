@@ -38,6 +38,13 @@ export const systemEventTypes = [
   "BUDGET_EXCEEDED",
 ] as const;
 
+export const workflowEventTypes = [
+  "WORKFLOW_INITIALIZED",
+  "WORKFLOW_PROGRESS",
+  "WORKFLOW_COMPLETED",
+  "WORKFLOW_SHUTDOWN",
+] as const;
+
 export const eventCategories = {
   agent: agentEventTypes,
   task: taskEventTypes,
@@ -45,6 +52,7 @@ export const eventCategories = {
   file: fileEventTypes,
   security: securityEventTypes,
   system: systemEventTypes,
+  workflow: workflowEventTypes,
 } as const;
 
 export const eventTypes = [
@@ -54,6 +62,7 @@ export const eventTypes = [
   ...fileEventTypes,
   ...securityEventTypes,
   ...systemEventTypes,
+  ...workflowEventTypes,
 ] as const;
 
 export const eventSeverities = ["info", "warning", "error", "critical"] as const;
