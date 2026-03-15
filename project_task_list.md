@@ -7,10 +7,10 @@
 
 # Current Status
 
-- [x] Completed phases: `1.1` through `1.6`, plus `2.1`, `2.2`, `2.3`, and `2.4`
-- [x] Latest completed phase: `2.4 Agent Orchestration Engine`
-- [x] Backend foundation, role-specific agent system, task management system, and orchestration engine are implemented in the repository
-- [ ] Next phase not started: `3.1 Repository Intelligence Engine`
+- [x] Completed phases: `1.1` through `1.6`, plus `2.1`, `2.2`, `2.3`, `2.4`, and `3.1`
+- [x] Latest completed phase: `3.1 Repository Intelligence Engine`
+- [x] Backend foundation, role-specific agent system, task management system, orchestration engine, and repository intelligence engine are implemented in the repository
+- [ ] Next phase not started: `3.2 Knowledge Graph`
 
 ---
 
@@ -475,11 +475,11 @@
 - [x] Implement code graph builder from AST
 - [x] Implement incremental graph updates (on file change)
 - [x] 📌 **Git Commit #84**: `feat(code-graph): add code graph edges and code graph builder` — Stage, commit, and push changes
-- [ ] Implement graph queries (find callers, find dependencies, find usages)
-- [ ] Implement graph visualization data export
-- [ ] Implement graph persistence (store/load)
-- [ ] 📌 **Git Commit #85**: `feat(code-graph): add graph queries (find and graph visualization data` — Stage, commit, and push changes
-- [ ] Write unit tests for code graph operations
+- [x] Implement graph queries (find callers, find dependencies, find usages)
+- [x] Implement graph visualization data export
+- [x] Implement graph persistence (store/load)
+- [x] 📌 **Git Commit #85**: `feat(code-graph): add graph queries (find and graph visualization data` — Stage, commit, and push changes
+- [x] Write unit tests for code graph operations
 
 ---
 

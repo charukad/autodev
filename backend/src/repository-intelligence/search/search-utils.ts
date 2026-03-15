@@ -94,10 +94,7 @@ export function compareSemanticMatches(
   return left.startLine - right.startLine;
 }
 
-function scoreTextMatch(
-  normalizedQuery: string,
-  match: Omit<TextSearchMatch, "score">
-): number {
+function scoreTextMatch(normalizedQuery: string, match: Omit<TextSearchMatch, "score">): number {
   const normalizedContent = match.content.toLowerCase();
   const normalizedPath = match.filePath.toLowerCase();
   const normalizedBaseName = path.basename(match.filePath).toLowerCase();

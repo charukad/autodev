@@ -14,7 +14,13 @@ export async function listWorkspaceFiles(options: {
       ? new Set(options.fileTypes.map(normalizeFileType))
       : undefined;
 
-  await visitDirectory(options.projectRoot, options.projectRoot, excludedDirectories, normalizedFileTypes, files);
+  await visitDirectory(
+    options.projectRoot,
+    options.projectRoot,
+    excludedDirectories,
+    normalizedFileTypes,
+    files
+  );
 
   return files.sort((left, right) => left.localeCompare(right));
 }
@@ -37,7 +43,13 @@ async function visitDirectory(
         continue;
       }
 
-      await visitDirectory(projectRoot, absolutePath, excludedDirectories, normalizedFileTypes, files);
+      await visitDirectory(
+        projectRoot,
+        absolutePath,
+        excludedDirectories,
+        normalizedFileTypes,
+        files
+      );
       continue;
     }
 

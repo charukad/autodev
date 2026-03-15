@@ -1,10 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { RepositoryAstParser } from "../../src/repository-intelligence";
-import {
-  extractExports,
-  extractImports,
-} from "../../src/repository-intelligence";
+import { extractExports, extractImports } from "../../src/repository-intelligence";
 
 test("import/export extractor reads imports and explicit exports from TypeScript", () => {
   const parser = new RepositoryAstParser();

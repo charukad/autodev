@@ -45,6 +45,12 @@ test("code graph builder updates a file graph incrementally", () => {
     "export function helperRenamed() { return true; }\n"
   );
 
-  assert.equal(updated.listNodes().some((node) => node.name === "helper"), false);
-  assert.equal(updated.listNodes().some((node) => node.name === "helperRenamed"), true);
+  assert.equal(
+    updated.listNodes().some((node) => node.name === "helper"),
+    false
+  );
+  assert.equal(
+    updated.listNodes().some((node) => node.name === "helperRenamed"),
+    true
+  );
 });

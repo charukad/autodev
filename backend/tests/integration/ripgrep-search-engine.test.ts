@@ -68,7 +68,11 @@ test("ripgrep search engine supports regex mode, file type filters, exclusions, 
     "export class AuthService {}\nexport const authServiceName = 'AuthService';\n"
   );
   await writeProjectFile(projectRoot, "src/auth-helper.ts", "export const authHelper = true;\n");
-  await writeProjectFile(projectRoot, "node_modules/ignored.ts", "export const authServiceName = true;\n");
+  await writeProjectFile(
+    projectRoot,
+    "node_modules/ignored.ts",
+    "export const authServiceName = true;\n"
+  );
   await writeProjectFile(projectRoot, "docs/reference.md", "AuthService docs\n");
 
   const regexResult = await engine.searchText({
@@ -84,5 +88,8 @@ test("ripgrep search engine supports regex mode, file type filters, exclusions, 
     new Set(regexResult.matches.map((match) => match.filePath)),
     new Set(["src/AuthService.ts", "src/auth-helper.ts"])
   );
-  assert.equal(regexResult.matches.some((match) => match.filePath.includes("node_modules")), false);
+  assert.equal(
+    regexResult.matches.some((match) => match.filePath.includes("node_modules")),
+    false
+  );
 });

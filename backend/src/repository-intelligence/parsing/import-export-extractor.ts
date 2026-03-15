@@ -1,10 +1,5 @@
 import type Parser from "tree-sitter";
-import type {
-  ExportReference,
-  ImportReference,
-  ParsedCodeFile,
-  ParsedSyntaxTree,
-} from "./types";
+import type { ExportReference, ImportReference, ParsedCodeFile, ParsedSyntaxTree } from "./types";
 
 export function extractImports(parsed: ParsedSyntaxTree): ImportReference[] {
   const imports: ImportReference[] = [];
@@ -95,7 +90,9 @@ function readSourceFromImportStatement(node: Parser.SyntaxNode): string | undefi
 
 function readImportLikeNode(node: Parser.SyntaxNode): string | undefined {
   if (node.type === "import_declaration") {
-    return readStringValue(node.namedChildren.find((child) => child.type === "import_spec")?.childForFieldName("path"));
+    return readStringValue(
+      node.namedChildren.find((child) => child.type === "import_spec")?.childForFieldName("path")
+    );
   }
 
   if (node.type === "using_directive") {

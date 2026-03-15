@@ -1,13 +1,7 @@
 import type { JsonValue } from "@ai-office/shared";
 import type { SupportedLanguageId } from "../parsing";
 
-export type CodeGraphNodeKind =
-  | "file"
-  | "function"
-  | "method"
-  | "class"
-  | "struct"
-  | "module";
+export type CodeGraphNodeKind = "file" | "function" | "method" | "class" | "struct" | "module";
 
 export type CodeGraphEdgeKind =
   | "contains"

@@ -25,14 +25,7 @@ test("semantic code search ranks symbol matches by name relevance", async (t) =>
   await writeProjectFile(
     projectRoot,
     "src/user-service.ts",
-    [
-      "export class UserService {",
-      "  loadUser() {",
-      "    return true;",
-      "  }",
-      "}",
-      "",
-    ].join("\n")
+    ["export class UserService {", "  loadUser() {", "    return true;", "  }", "}", ""].join("\n")
   );
 
   const result = await engine.searchSymbols({
@@ -75,7 +68,10 @@ test("semantic code search respects file type filters and directory exclusions",
     limit: 10,
   });
 
-  assert.equal(result.matches.some((match) => match.filePath.startsWith("vendor/")), false);
+  assert.equal(
+    result.matches.some((match) => match.filePath.startsWith("vendor/")),
+    false
+  );
   assert.deepEqual(
     [...result.matches.map((match) => match.symbolName)].sort((left, right) =>
       left.localeCompare(right)

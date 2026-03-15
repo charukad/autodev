@@ -40,7 +40,13 @@ export class RepositoryAstParser {
 function extractSymbols(parsedSyntaxTree: ParsedSyntaxTree): ExtractedCodeSymbol[] {
   const symbols: ExtractedCodeSymbol[] = [];
 
-  visitNode(parsedSyntaxTree.rootNode, parsedSyntaxTree.languageId, parsedSyntaxTree.sourcePath, {}, symbols);
+  visitNode(
+    parsedSyntaxTree.rootNode,
+    parsedSyntaxTree.languageId,
+    parsedSyntaxTree.sourcePath,
+    {},
+    symbols
+  );
 
   return symbols;
 }

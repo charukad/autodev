@@ -10,12 +10,7 @@ import {
 import { isSupportedRepositoryLanguagePath } from "../parsing";
 import { listWorkspaceFiles } from "../search";
 import { CodeGraph } from "./code-graph";
-import type {
-  CodeGraphEdge,
-  CodeGraphEdgeKind,
-  CodeGraphNode,
-  CodeGraphNodeKind,
-} from "./types";
+import type { CodeGraphEdge, CodeGraphEdgeKind, CodeGraphNode, CodeGraphNodeKind } from "./types";
 
 export class CodeGraphBuilder {
   constructor(private readonly astParser = new RepositoryAstParser()) {}
@@ -200,12 +195,7 @@ function createModuleNode(source: string): CodeGraphNode {
   };
 }
 
-function createEdge(
-  kind: CodeGraphEdgeKind,
-  from: string,
-  to: string,
-  id: string
-): CodeGraphEdge {
+function createEdge(kind: CodeGraphEdgeKind, from: string, to: string, id: string): CodeGraphEdge {
   return {
     id,
     kind,
@@ -313,7 +303,9 @@ function readCallName(node: Parser.SyntaxNode): string | undefined {
   }
 
   if (node.type === "method_invocation" || node.type === "invocation_expression") {
-    return readTrailingIdentifier(node.childForFieldName("name") ?? node.childForFieldName("function"));
+    return readTrailingIdentifier(
+      node.childForFieldName("name") ?? node.childForFieldName("function")
+    );
   }
 
   return undefined;
@@ -324,7 +316,9 @@ function readTrailingIdentifier(node: Parser.SyntaxNode | null | undefined): str
     return undefined;
   }
 
-  if (["identifier", "type_identifier", "field_identifier", "property_identifier"].includes(node.type)) {
+  if (
+    ["identifier", "type_identifier", "field_identifier", "property_identifier"].includes(node.type)
+  ) {
     return node.text.trim();
   }
 

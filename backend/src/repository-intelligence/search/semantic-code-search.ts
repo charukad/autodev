@@ -1,30 +1,17 @@
 import path from "node:path";
-import {
-  RepositoryAstParser,
-  isSupportedRepositoryLanguagePath,
-} from "../parsing";
-import {
-  compareSemanticMatches,
-  rankSemanticSymbol,
-} from "./search-utils";
+import { RepositoryAstParser, isSupportedRepositoryLanguagePath } from "../parsing";
+import { compareSemanticMatches, rankSemanticSymbol } from "./search-utils";
 import { listWorkspaceFiles } from "./workspace-files";
-import type {
-  SemanticCodeSearchOptions,
-  SemanticCodeSearchResult,
-} from "./types";
+import type { SemanticCodeSearchOptions, SemanticCodeSearchResult } from "./types";
 
 export class SemanticCodeSearchEngine {
   constructor(private readonly astParser = new RepositoryAstParser()) {}
 
-  async searchSymbols(
-    options: SemanticCodeSearchOptions
-  ): Promise<SemanticCodeSearchResult> {
+  async searchSymbols(options: SemanticCodeSearchOptions): Promise<SemanticCodeSearchResult> {
     const workspaceFiles = await listWorkspaceFiles({
       projectRoot: options.projectRoot,
       ...(options.fileTypes ? { fileTypes: options.fileTypes } : {}),
-      ...(options.excludeDirectories
-        ? { excludeDirectories: options.excludeDirectories }
-        : {}),
+      ...(options.excludeDirectories ? { excludeDirectories: options.excludeDirectories } : {}),
     });
     const matches = [];
 

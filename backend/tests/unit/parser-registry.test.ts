@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {
-  ParserRegistry,
-  UnsupportedLanguagePathError,
-} from "../../src/repository-intelligence";
+import { ParserRegistry, UnsupportedLanguagePathError } from "../../src/repository-intelligence";
 
 const fixtures = [
   {

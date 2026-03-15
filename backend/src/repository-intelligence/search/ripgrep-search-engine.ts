@@ -1,10 +1,6 @@
 import { spawn } from "node:child_process";
 import type { SpawnOptions } from "node:child_process";
-import {
-  buildExcludedDirectories,
-  normalizeFileType,
-  rankTextSearchMatches,
-} from "./search-utils";
+import { buildExcludedDirectories, normalizeFileType, rankTextSearchMatches } from "./search-utils";
 import type { TextSearchMatch, TextSearchOptions, TextSearchResult } from "./types";
 
 export class RipgrepUnavailableError extends Error {
@@ -15,7 +11,10 @@ export class RipgrepUnavailableError extends Error {
 }
 
 export class RipgrepExecutionError extends Error {
-  constructor(message: string, readonly stderr: string) {
+  constructor(
+    message: string,
+    readonly stderr: string
+  ) {
     super(message);
     this.name = "RipgrepExecutionError";
   }
@@ -41,13 +40,9 @@ export class RipgrepSearchEngine {
       throw new RipgrepUnavailableError();
     }
 
-    const result = await runCommand(
-      "rg",
-      buildRipgrepArguments(options),
-      {
-        cwd: options.projectRoot,
-      }
-    );
+    const result = await runCommand("rg", buildRipgrepArguments(options), {
+      cwd: options.projectRoot,
+    });
 
     if (result.exitCode !== 0 && result.exitCode !== 1) {
       throw new RipgrepExecutionError("ripgrep returned a non-zero exit code.", result.stderr);
@@ -115,12 +110,7 @@ function runCommand(
 }
 
 function isMissingBinaryError(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    error.code === "ENOENT"
-  );
+  return typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT";
 }
 
 function parseRipgrepLine(line: string): TextSearchMatch {

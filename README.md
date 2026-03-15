@@ -1,6 +1,6 @@
 # AI Office Coding System
 
-The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 2.4 foundation:
+The AI Office Coding System is a multi-agent software engineering platform that treats an AI team like a real engineering organization. This repository now contains the Phase 1.1 through 3.1 foundation:
 
 - Monorepo workspace layout for `backend`, `frontend`, `cli`, and `shared`
 - Shared TypeScript, ESLint, and Prettier configuration
@@ -14,6 +14,7 @@ The AI Office Coding System is a multi-agent software engineering platform that 
 - Role-specific agents for planning, repository scanning, coding, testing, debugging, security review, and project management
 - Task management with task lifecycle validation, DAG analysis, scheduling, timeout handling, and retries
 - Agent orchestration with session initialization, planner-to-task routing, tool delegation, workflow progress, aggregation, and graceful shutdown
+- Repository intelligence with Tree-sitter parsing, ripgrep search, semantic symbol search, and a persistent code graph
 - Local Docker services for PostgreSQL and Redis
 - Development automation via `Makefile`, Git hooks, and CI
 
@@ -79,5 +80,6 @@ Current implementation covers:
 - Phase 2.2 Agent Roles Implementation
 - Phase 2.3 Task Management System
 - Phase 2.4 Agent Orchestration Engine
+- Phase 3.1 Repository Intelligence Engine
 
-The next major step is Phase 3.1, the repository intelligence engine.
+The next major step is Phase 3.2, the knowledge graph.

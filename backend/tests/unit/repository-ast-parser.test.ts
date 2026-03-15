@@ -95,14 +95,7 @@ const fixtures = [
   },
   {
     path: "src/example.java",
-    source: [
-      "class Service {",
-      "  String run() {",
-      '    return "ok";',
-      "  }",
-      "}",
-      "",
-    ].join("\n"),
+    source: ["class Service {", "  String run() {", '    return "ok";', "  }", "}", ""].join("\n"),
     expected: {
       classes: ["Service"],
       methods: ["run"],
@@ -165,10 +158,7 @@ test("repository AST parser extracts functions, methods, classes, and structs", 
 
 test("repository AST parser keeps parent context for extracted methods", () => {
   const parser = new RepositoryAstParser();
-  const parsed = parser.parseSource(
-    "src/example.ts",
-    "class Service { run() { return true; } }\n"
-  );
+  const parsed = parser.parseSource("src/example.ts", "class Service { run() { return true; } }\n");
 
   assert.equal(parsed.methods[0]?.parentName, "Service");
 });

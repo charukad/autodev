@@ -4,11 +4,7 @@ import {
   getLanguageDefinitionForPath,
   supportedRepositoryLanguages,
 } from "./language-support";
-import type {
-  ParsedSyntaxTree,
-  RepositoryLanguageDefinition,
-  SupportedGrammarId,
-} from "./types";
+import type { ParsedSyntaxTree, RepositoryLanguageDefinition, SupportedGrammarId } from "./types";
 
 export class UnsupportedLanguagePathError extends Error {
   constructor(filePath: string) {

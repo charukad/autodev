@@ -60,6 +60,11 @@ export function getFoundationSummary() {
         toolDelegation: "available",
         progressReporting: "available",
       },
+      repositoryIntelligence: {
+        treeSitterParsing: "available",
+        semanticSearch: "available",
+        codeGraph: "available",
+      },
     },
   };
 }
