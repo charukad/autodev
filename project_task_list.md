@@ -446,9 +446,9 @@
 
 ### Code Parsing
 
-- [ ] Integrate Tree-sitter for language-aware parsing
-- [ ] Add Tree-sitter grammars for: TypeScript, JavaScript, Python, Go, Rust, Java, C#
-- [ ] 📌 **Git Commit #79**: `feat(code-parsing): add integrate tree-sitter for language-aware and tree-sitter grammars for:` — Stage, commit, and push changes
+- [x] Integrate Tree-sitter for language-aware parsing
+- [x] Add Tree-sitter grammars for: TypeScript, JavaScript, Python, Go, Rust, Java, C#
+- [x] 📌 **Git Commit #79**: `feat(code-parsing): add integrate tree-sitter for language-aware and tree-sitter grammars for:` — Stage, commit, and push changes
 - [ ] Implement file-level AST parsing
 - [ ] Implement function/method extraction from AST
 - [ ] Implement class/struct extraction from AST
