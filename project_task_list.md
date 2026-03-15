@@ -453,8 +453,8 @@
 - [x] Implement function/method extraction from AST
 - [x] Implement class/struct extraction from AST
 - [x] 📌 **Git Commit #80**: `feat(code-parsing): add file-level ast parsing and function/method extraction from` — Stage, commit, and push changes
-- [ ] Implement import/require extraction from AST
-- [ ] Implement export extraction from AST
+- [x] Implement import/require extraction from AST
+- [x] Implement export extraction from AST
 
 ### Code Search
 
@@ -471,10 +471,10 @@
 
 - [x] Design code graph data model (nodes: files, functions, classes, modules)
 - [x] 📌 **Git Commit #83**: `feat(code-graph): add code graph data` — Stage, commit, and push changes
-- [ ] Design code graph edges (imports, calls, dependencies, inheritance)
-- [ ] Implement code graph builder from AST
-- [ ] Implement incremental graph updates (on file change)
-- [ ] 📌 **Git Commit #84**: `feat(code-graph): add code graph edges and code graph builder` — Stage, commit, and push changes
+- [x] Design code graph edges (imports, calls, dependencies, inheritance)
+- [x] Implement code graph builder from AST
+- [x] Implement incremental graph updates (on file change)
+- [x] 📌 **Git Commit #84**: `feat(code-graph): add code graph edges and code graph builder` — Stage, commit, and push changes
 - [ ] Implement graph queries (find callers, find dependencies, find usages)
 - [ ] Implement graph visualization data export
 - [ ] Implement graph persistence (store/load)

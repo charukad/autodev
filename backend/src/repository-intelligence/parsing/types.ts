@@ -58,3 +58,17 @@ export type ParsedCodeFile = ParsedSyntaxTree & {
   classes: ExtractedCodeSymbol[];
   structs: ExtractedCodeSymbol[];
 };
+
+export type ImportReferenceKind = "import" | "require" | "use" | "using";
+
+export type ImportReference = {
+  source: string;
+  kind: ImportReferenceKind;
+};
+
+export type ExportReferenceKind = "named" | "implicit";
+
+export type ExportReference = {
+  symbolName: string;
+  kind: ExportReferenceKind;
+};
