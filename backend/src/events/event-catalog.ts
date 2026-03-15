@@ -1,7 +1,10 @@
 export const agentEventTypes = [
   "AGENT_SPAWNED",
+  "AGENT_ASSIGNED",
   "AGENT_STATE_CHANGED",
   "AGENT_MOVED",
+  "AGENT_COMPLETED",
+  "AGENT_FAILED",
   "AGENT_TERMINATED",
 ] as const;
 

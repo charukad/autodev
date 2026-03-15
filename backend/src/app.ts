@@ -5,6 +5,7 @@ import { redisConfig } from "./config/redis";
 import { RedisChannels } from "./infrastructure/database/redis/keyspace";
 import { createCoreTools } from "./tools";
 import { startApiServer } from "./api/server";
+import { defaultAgentRooms, defaultAgentTools } from "./agents";
 
 export function getFoundationSummary() {
   const environment = getEnvironment();
@@ -40,6 +41,14 @@ export function getFoundationSummary() {
         registry: "available",
         coreToolCount: createCoreTools().length,
         tools: createCoreTools().map((tool) => tool.name),
+      },
+      agentOperatingSystem: {
+        registry: "available",
+        lifecycleManager: "available",
+        supportedRoles: Object.keys(defaultAgentRooms),
+        defaultToolProfiles: Object.fromEntries(
+          Object.entries(defaultAgentTools).map(([role, tools]) => [role, tools.length])
+        ),
       },
     },
   };
