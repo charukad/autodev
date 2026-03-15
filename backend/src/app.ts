@@ -50,6 +50,11 @@ export function getFoundationSummary() {
           Object.entries(defaultAgentTools).map(([role, tools]) => [role, tools.length])
         ),
       },
+      taskManagementSystem: {
+        taskService: "available",
+        taskGraph: "available",
+        taskScheduler: "available",
+      },
     },
   };
 }
