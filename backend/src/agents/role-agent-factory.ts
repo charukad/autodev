@@ -1,8 +1,10 @@
 import { AgentRole } from "@prisma/client";
 import { AgentBase } from "./agent-base";
 import { CodeAgent } from "./code-agent";
+import { DebugAgent } from "./debug-agent";
 import { PlannerAgent } from "./planner-agent";
 import { RepoScannerAgent } from "./repo-scanner-agent";
+import { SecurityAgent } from "./security-agent";
 import { TestAgent } from "./test-agent";
 import type { AgentFactory, AgentSnapshot } from "./types";
 
@@ -13,8 +15,12 @@ export function createDefaultAgentFactory(): AgentFactory {
         return new PlannerAgent(snapshot, dependencies);
       case AgentRole.code:
         return new CodeAgent(snapshot, dependencies);
+      case AgentRole.debug:
+        return new DebugAgent(snapshot, dependencies);
       case AgentRole.repo_scanner:
         return new RepoScannerAgent(snapshot, dependencies);
+      case AgentRole.security:
+        return new SecurityAgent(snapshot, dependencies);
       case AgentRole.test:
         return new TestAgent(snapshot, dependencies);
       default:
