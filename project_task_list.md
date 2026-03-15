@@ -460,12 +460,12 @@
 
 - [x] Integrate ripgrep for fast text search
 - [x] 📌 **Git Commit #81**: `feat(code-search): add integrate ripgrep for fast` — Stage, commit, and push changes
-- [ ] Implement semantic code search (function names, class names)
-- [ ] Implement regex-based search
-- [ ] Implement file type filtering
-- [ ] 📌 **Git Commit #82**: `feat(code-search): add semantic code search and regex-based search` — Stage, commit, and push changes
-- [ ] Implement directory exclusion (node_modules, .git, etc.)
-- [ ] Implement search result ranking by relevance
+- [x] Implement semantic code search (function names, class names)
+- [x] Implement regex-based search
+- [x] Implement file type filtering
+- [x] 📌 **Git Commit #82**: `feat(code-search): add semantic code search and regex-based search` — Stage, commit, and push changes
+- [x] Implement directory exclusion (node_modules, .git, etc.)
+- [x] Implement search result ranking by relevance
 
 ### Code Graph
 

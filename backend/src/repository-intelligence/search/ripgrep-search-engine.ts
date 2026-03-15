@@ -1,5 +1,10 @@
 import { spawn } from "node:child_process";
 import type { SpawnOptions } from "node:child_process";
+import {
+  buildExcludedDirectories,
+  normalizeFileType,
+  rankTextSearchMatches,
+} from "./search-utils";
 import type { TextSearchMatch, TextSearchOptions, TextSearchResult } from "./types";
 
 export class RipgrepUnavailableError extends Error {
@@ -38,19 +43,7 @@ export class RipgrepSearchEngine {
 
     const result = await runCommand(
       "rg",
-      [
-        "--line-number",
-        "--column",
-        "--no-heading",
-        "--color",
-        "never",
-        "--fixed-strings",
-        "--hidden",
-        "--max-count",
-        String(options.limit ?? 100),
-        options.query,
-        ".",
-      ],
+      buildRipgrepArguments(options),
       {
         cwd: options.projectRoot,
       }
@@ -67,11 +60,12 @@ export class RipgrepSearchEngine {
             .split("\n")
             .filter((line) => line.trim().length > 0)
             .map(parseRipgrepLine);
+    const rankedMatches = rankTextSearchMatches(options.query, matches);
 
     return {
       engine: "ripgrep",
-      matches,
-      totalMatches: matches.length,
+      matches: rankedMatches.slice(0, options.limit ?? 100),
+      totalMatches: rankedMatches.length,
     };
   }
 }
@@ -148,5 +142,26 @@ function parseRipgrepLine(line: string): TextSearchMatch {
     line: Number(rawLine),
     column: Number(rawColumn),
     content,
+    score: 0,
   };
+}
+
+function buildRipgrepArguments(options: TextSearchOptions): string[] {
+  const args = ["--line-number", "--column", "--no-heading", "--color", "never", "--hidden"];
+
+  if (!options.regex) {
+    args.push("--fixed-strings");
+  }
+
+  for (const fileType of options.fileTypes ?? []) {
+    args.push("--glob", `*${normalizeFileType(fileType)}`);
+  }
+
+  for (const directory of buildExcludedDirectories(options.excludeDirectories)) {
+    args.push("--glob", `!${directory}/**`);
+  }
+
+  args.push(options.query, ".");
+
+  return args;
 }
