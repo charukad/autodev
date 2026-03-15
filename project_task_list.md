@@ -469,8 +469,8 @@
 
 ### Code Graph
 
-- [ ] Design code graph data model (nodes: files, functions, classes, modules)
-- [ ] 📌 **Git Commit #83**: `feat(code-graph): add code graph data` — Stage, commit, and push changes
+- [x] Design code graph data model (nodes: files, functions, classes, modules)
+- [x] 📌 **Git Commit #83**: `feat(code-graph): add code graph data` — Stage, commit, and push changes
 - [ ] Design code graph edges (imports, calls, dependencies, inheritance)
 - [ ] Implement code graph builder from AST
 - [ ] Implement incremental graph updates (on file change)
