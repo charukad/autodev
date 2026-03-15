@@ -1,6 +1,7 @@
 import { AgentRole } from "@prisma/client";
 import { AgentBase } from "./agent-base";
 import { PlannerAgent } from "./planner-agent";
+import { RepoScannerAgent } from "./repo-scanner-agent";
 import type { AgentFactory, AgentSnapshot } from "./types";
 
 export function createDefaultAgentFactory(): AgentFactory {
@@ -8,6 +9,8 @@ export function createDefaultAgentFactory(): AgentFactory {
     switch (snapshot.role) {
       case AgentRole.planner:
         return new PlannerAgent(snapshot, dependencies);
+      case AgentRole.repo_scanner:
+        return new RepoScannerAgent(snapshot, dependencies);
       default:
         return new AgentBase(snapshot, dependencies);
     }
