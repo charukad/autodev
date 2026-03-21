@@ -21,7 +21,13 @@ export function scoreContextItem(
   const recencyBoost = resolveRecencyBoost(item.updatedAt ?? item.createdAt, options.now);
 
   return Number(
-    (baseSectionWeights[item.section] + relevance * 0.5 + priorityBoost + requiredBoost + recencyBoost).toFixed(4)
+    (
+      baseSectionWeights[item.section] +
+      relevance * 0.5 +
+      priorityBoost +
+      requiredBoost +
+      recencyBoost
+    ).toFixed(4)
   );
 }
 
@@ -50,7 +56,10 @@ function resolveRecencyBoost(timestamp: string | undefined, now?: () => Date): n
     return 0;
   }
 
-  const ageHours = Math.max(0, ((now ?? (() => new Date()))().getTime() - parsedTimestamp) / 3_600_000);
+  const ageHours = Math.max(
+    0,
+    ((now ?? (() => new Date()))().getTime() - parsedTimestamp) / 3_600_000
+  );
   if (ageHours <= 1) {
     return 0.2;
   }
@@ -86,4 +95,3 @@ function defaultRelevance(section: ContextItemInput["section"]): number {
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.max(minimum, Math.min(maximum, value));
 }
-

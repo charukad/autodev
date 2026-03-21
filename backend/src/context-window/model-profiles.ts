@@ -11,7 +11,7 @@ const defaultSectionAllocations: ContextSectionAllocations = {
   projectContext: 0.12,
   taskContext: 0.12,
   codeContext: 0.33,
-  conversation: 0.20,
+  conversation: 0.2,
   response: 0.15,
 };
 
@@ -48,8 +48,12 @@ export class ContextBudgetRegistry {
 
     const normalizedModel = model.toLowerCase();
     const partial =
-      [...this.profiles.values()].find((profile) => normalizedModel.startsWith(profile.model.toLowerCase())) ??
-      [...this.profiles.values()].find((profile) => normalizedModel.includes(profile.model.toLowerCase()));
+      [...this.profiles.values()].find((profile) =>
+        normalizedModel.startsWith(profile.model.toLowerCase())
+      ) ??
+      [...this.profiles.values()].find((profile) =>
+        normalizedModel.includes(profile.model.toLowerCase())
+      );
 
     return structuredClone(partial ?? this.profiles.get("gpt-4o")!);
   }
@@ -73,12 +77,13 @@ export class ContextBudgetRegistry {
     const requestedResponseTokens =
       override?.responseTokens ??
       Math.floor(
-        totalTokens * (override?.sectionAllocations?.response ?? profile.sectionAllocations.response)
+        totalTokens *
+          (override?.sectionAllocations?.response ?? profile.sectionAllocations.response)
       );
     const responseTokens = clamp(
       requestedResponseTokens,
-      Math.min(256, totalTokens),
-      totalTokens - Math.min(1_024, totalTokens - 1)
+      Math.min(16, totalTokens),
+      totalTokens - 1
     );
     const remainingTokens = Math.max(1, totalTokens - responseTokens);
     const mergedAllocations = {
@@ -102,7 +107,9 @@ export class ContextBudgetRegistry {
     const sectionTokens = contentSections.reduce<ResolvedContextBudget["sectionTokens"]>(
       (accumulator, section, index) => {
         const ratio =
-          allocationSum > 0 ? Math.max(0, mergedAllocations[section]) / allocationSum : 1 / contentSections.length;
+          allocationSum > 0
+            ? Math.max(0, mergedAllocations[section]) / allocationSum
+            : 1 / contentSections.length;
         const sectionBudget =
           index === contentSections.length - 1
             ? remainingTokens - consumed
@@ -151,4 +158,3 @@ function createProfile(
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.max(minimum, Math.min(maximum, value));
 }
-

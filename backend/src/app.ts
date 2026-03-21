@@ -71,6 +71,13 @@ export function getFoundationSummary() {
         persistence: "available",
         incrementalUpdates: "available",
       },
+      contextWindow: {
+        modelBudgets: "available",
+        tokenCounting: "available",
+        chunking: "available",
+        summarization: ["heuristic", "openai-optional"],
+        slidingWindow: "available",
+      },
     },
   };
 }

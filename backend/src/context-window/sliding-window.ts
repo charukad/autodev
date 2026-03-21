@@ -52,7 +52,8 @@ export async function buildConversationWindow(
     section: "conversation",
     title: "Conversation summary",
     content: summaryResult.content,
-    relevance: 0.55,
+    relevance: 0.7,
+    required: true,
     summarizable: true,
     metadata: {
       messageCount: olderMessages.length,
@@ -61,7 +62,12 @@ export async function buildConversationWindow(
   };
 
   return {
-    items: [summaryItem, ...recentMessages.map((message, index) => toConversationItem(message, olderMessages.length + index))],
+    items: [
+      summaryItem,
+      ...recentMessages.map((message, index) =>
+        toConversationItem(message, olderMessages.length + index)
+      ),
+    ],
     summaries: [
       {
         sourceItemIds,

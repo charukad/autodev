@@ -70,7 +70,8 @@ export class FileChunker {
 
     for (const block of blocks) {
       const nextLines = [...currentChunkLines, ...block.lines];
-      const nextLineCount = chunkEndLine === 0 ? block.endLine - chunkStartLine + 1 : nextLines.length;
+      const nextLineCount =
+        chunkEndLine === 0 ? block.endLine - chunkStartLine + 1 : nextLines.length;
       const nextCandidate: ContextItemInput = {
         section: item.section,
         content: nextLines.join("\n"),

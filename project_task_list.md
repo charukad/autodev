@@ -7,10 +7,10 @@
 
 # Current Status
 
-- [x] Latest completed local phase: `3.2 Knowledge Graph`
-- [x] Functional work for `3.2` is implemented and validated locally
-- [ ] Commit and push tasks for `3.2` are still pending by request
-- [ ] Next phase not started: `3.3 Context Window Management`
+- [x] Latest completed local phase: `3.3 Context Window Management`
+- [x] Functional work for `3.2` and `3.3` is implemented and validated locally
+- [ ] Commit and push tasks for `3.2` and `3.3` are still pending by request
+- [ ] Next phase not started: `3.4 Agentic RAG Pipeline`
 
 ---
 
@@ -510,21 +510,21 @@
 
 ## 3.3 Context Window Management `NEW`
 
-- [ ] Design context budget allocation strategy (system prompt, code context, conversation, response)
+- [x] Design context budget allocation strategy (system prompt, code context, conversation, response)
 - [ ] 📌 **Git Commit #89**: `feat(33-context-window-management-new): add context budget allocation` — Stage, commit, and push changes
-- [ ] Implement token counting for all supported models
-- [ ] Implement context priority scoring (relevance to current task)
-- [ ] Implement context pruning — remove least relevant items when over budget
+- [x] Implement token counting for all supported models
+- [x] Implement context priority scoring (relevance to current task)
+- [x] Implement context pruning — remove least relevant items when over budget
 - [ ] 📌 **Git Commit #90**: `feat(33-context-window-management-new): add token counting for and context priority scoring` — Stage, commit, and push changes
-- [ ] Implement context summarization — compress long context using LLM
-- [ ] Implement file chunking strategy — split large files into meaningful chunks
-- [ ] Implement sliding window for long-running conversations
+- [x] Implement context summarization — compress long context using LLM
+- [x] Implement file chunking strategy — split large files into meaningful chunks
+- [x] Implement sliding window for long-running conversations
 - [ ] 📌 **Git Commit #91**: `feat(33-context-window-management-new): add context summarization — and file chunking strategy` — Stage, commit, and push changes
-- [ ] Implement context snapshot/restore for agent state persistence
-- [ ] Create configurable context budgets per model
-- [ ] Write unit tests for context management
+- [x] Implement context snapshot/restore for agent state persistence
+- [x] Create configurable context budgets per model
+- [x] Write unit tests for context management
 - [ ] 📌 **Git Commit #92**: `test(33-context-window-management-new): add context snapshot/restore for and configurable context budgets` — Stage, commit, and push changes
-- [ ] Write integration tests with actual LLM calls
+- [x] Write integration tests with actual LLM calls
 
 ---
 

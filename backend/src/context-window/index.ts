@@ -1,6 +1,7 @@
 export * from "./context-window-manager";
 export * from "./file-chunker";
 export * from "./model-profiles";
+export * from "./openai-context-summarizer";
 export * from "./priority-scoring";
 export * from "./sliding-window";
 export * from "./summarizer";

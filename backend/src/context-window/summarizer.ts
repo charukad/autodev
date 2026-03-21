@@ -32,10 +32,21 @@ export class HeuristicContextSummarizer implements ContextSummarizer {
       };
     }
 
-    const summary =
-      looksLikeCode(sourceText)
-        ? summarizeCodeLikeText(request.model, sourceText, request.targetTokens, this.counter, this.budgets)
-        : summarizeProseLikeText(request.model, sourceText, request.targetTokens, this.counter, this.budgets);
+    const summary = looksLikeCode(sourceText)
+      ? summarizeCodeLikeText(
+          request.model,
+          sourceText,
+          request.targetTokens,
+          this.counter,
+          this.budgets
+        )
+      : summarizeProseLikeText(
+          request.model,
+          sourceText,
+          request.targetTokens,
+          this.counter,
+          this.budgets
+        );
 
     return {
       content: summary,
@@ -98,4 +109,3 @@ function summarizeProseLikeText(
 function looksLikeCode(value: string): boolean {
   return /[{}();=>]/.test(value) || /\b(class|function|const|let|var|import|export)\b/.test(value);
 }
-

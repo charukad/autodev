@@ -15,7 +15,12 @@ import type {
 } from "./types";
 import { FileChunker } from "./file-chunker";
 import { buildConversationWindow } from "./sliding-window";
-import { HeuristicTokenCounter, countContextItemTokens, truncateToTokenBudget, type TokenCounter } from "./token-counter";
+import {
+  HeuristicTokenCounter,
+  countContextItemTokens,
+  truncateToTokenBudget,
+  type TokenCounter,
+} from "./token-counter";
 
 const contentSections: ContextContentSection[] = [
   "systemPrompt",
@@ -42,13 +47,18 @@ export class ContextWindowManager {
   constructor(options: ContextWindowManagerOptions = {}) {
     this.budgets = options.budgets ?? new ContextBudgetRegistry();
     this.counter = options.counter ?? new HeuristicTokenCounter(this.budgets);
-    this.summarizer = options.summarizer ?? new HeuristicContextSummarizer(this.counter, this.budgets);
+    this.summarizer =
+      options.summarizer ?? new HeuristicContextSummarizer(this.counter, this.budgets);
     this.chunker = new FileChunker(this.counter);
     this.now = options.now ?? (() => new Date());
   }
 
   async assemble(input: ContextAssemblyInput): Promise<ContextAssemblyResult> {
-    const budget = this.budgets.resolveBudget(input.model, input.budgetOverride, input.maxAvailableTokens);
+    const budget = this.budgets.resolveBudget(
+      input.model,
+      input.budgetOverride,
+      input.maxAvailableTokens
+    );
     const summaryRecords: ContextSummaryRecord[] = [];
     const rawItems: ContextItemInput[] = [
       {
@@ -62,7 +72,9 @@ export class ContextWindowManager {
       },
       ...(input.projectContext ?? []),
       ...(input.taskContext ?? []),
-      ...((input.codeContext ?? []).flatMap((item) => this.chunker.chunkItem(input.model, item, input.chunking))),
+      ...(input.codeContext ?? []).flatMap((item) =>
+        this.chunker.chunkItem(input.model, item, input.chunking)
+      ),
     ];
 
     const conversationWindow = await buildConversationWindow(input.conversation ?? [], {
@@ -80,9 +92,7 @@ export class ContextWindowManager {
     const prunedItems: ContextWindowItem[] = [];
 
     for (const section of contentSections) {
-      const candidates = sortContextItems(
-        countedItems.filter((item) => item.section === section)
-      );
+      const candidates = sortContextItems(countedItems.filter((item) => item.section === section));
       const fitted = await this.fitSectionItems(
         input.model,
         section,
@@ -183,7 +193,13 @@ export class ContextWindowManager {
     if (totalTokens > sectionBudget) {
       compressed = compressed.map((item, index) =>
         index === findLargestItemIndex(compressed)
-          ? truncateWindowItem(model, item, Math.max(16, item.tokenCount - (totalTokens - sectionBudget)), this.counter, this.budgets)
+          ? truncateWindowItem(
+              model,
+              item,
+              Math.max(16, item.tokenCount - (totalTokens - sectionBudget)),
+              this.counter,
+              this.budgets
+            )
           : item
       );
       totalTokens = sumTokens(compressed);
@@ -204,7 +220,9 @@ export class ContextWindowManager {
     }
 
     return {
-      selected: sortContextItems(compressed.map((item) => ({ ...item, priorityScore: scoreContextItem(item) }))),
+      selected: sortContextItems(
+        compressed.map((item) => ({ ...item, priorityScore: scoreContextItem(item) }))
+      ),
       pruned,
     };
   }
@@ -227,7 +245,10 @@ export class ContextWindowManager {
       }
 
       const overflow = totalTokens - sectionBudget;
-      const targetTokens = Math.max(32, Math.min(candidate.tokenCount - 8, candidate.tokenCount - overflow));
+      const targetTokens = Math.max(
+        32,
+        Math.min(candidate.tokenCount - 8, candidate.tokenCount - overflow)
+      );
       if (targetTokens >= candidate.tokenCount) {
         break;
       }
@@ -320,9 +341,7 @@ function pruneSelectedItems(
 ): ContextWindowItem[] {
   const remaining = sortContextItems(selected);
   while (sumTokens(remaining) > sectionBudget) {
-    const removableIndex = [...remaining]
-      .reverse()
-      .findIndex((item) => !item.required);
+    const removableIndex = [...remaining].reverse().findIndex((item) => !item.required);
     if (removableIndex === -1) {
       break;
     }

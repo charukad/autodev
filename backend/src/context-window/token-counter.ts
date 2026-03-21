@@ -4,7 +4,10 @@ import { ContextBudgetRegistry } from "./model-profiles";
 
 export interface TokenCounter {
   countText(model: ContextModelId, text: string): number;
-  countConversationMessage(model: ContextModelId, message: Pick<AgentConversationMessage, "role" | "content">): number;
+  countConversationMessage(
+    model: ContextModelId,
+    message: Pick<AgentConversationMessage, "role" | "content">
+  ): number;
 }
 
 export class HeuristicTokenCounter implements TokenCounter {
@@ -19,7 +22,10 @@ export class HeuristicTokenCounter implements TokenCounter {
 
     const punctuationWeight = (normalized.match(/[{}()[\];,.:]/g) ?? []).length * 0.2;
     const lineBreakWeight = (text.match(/\n/g) ?? []).length * 0.35;
-    return Math.max(1, Math.ceil(normalized.length / profile.charsPerToken + punctuationWeight + lineBreakWeight));
+    return Math.max(
+      1,
+      Math.ceil(normalized.length / profile.charsPerToken + punctuationWeight + lineBreakWeight)
+    );
   }
 
   countConversationMessage(
@@ -74,4 +80,3 @@ export function truncateToTokenBudget(
 function normalizeWhitespace(value: string): string {
   return value.replace(/\s+/g, " ").trim();
 }
-
