@@ -78,6 +78,13 @@ export function getFoundationSummary() {
         summarization: ["heuristic", "openai-optional"],
         slidingWindow: "available",
       },
+      ragPipeline: {
+        embeddingEngine: ["local-hash", "provider-pluggable"],
+        vectorStore: ["in-memory", "json-file"],
+        multiSourceIndexing: ["code", "documentation", "comments", "git-history", "external-docs"],
+        retrieval: ["vector", "keyword", "semantic-symbols"],
+        orchestrationIntegration: "available",
+      },
     },
   };
 }

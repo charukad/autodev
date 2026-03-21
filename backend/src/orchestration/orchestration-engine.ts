@@ -1,5 +1,5 @@
 import type { JsonValue } from "@ai-office/shared";
-import { AgentRole, TaskPriority, TaskStatus } from "@prisma/client";
+import { AgentRole, AgentState, TaskPriority, TaskStatus } from "@prisma/client";
 import type {
   Agent,
   AgentLifecycleManager,
@@ -10,6 +10,7 @@ import type {
 } from "../agents";
 import { inferAgentRoleForTask } from "../agents";
 import type { EventBus } from "../events";
+import { RagMiddleware } from "../rag";
 import type { ToolExecutionRequest, ToolExecutionResult, ToolExecutor } from "../tools";
 import type { TaskScheduler } from "../tasks";
 import type { TaskService } from "../tasks";
@@ -81,6 +82,7 @@ export type OrchestrationEngineOptions = {
   registry: AgentRegistry;
   lifecycleManager: AgentLifecycleManager;
   toolExecutor: ToolExecutor;
+  ragMiddleware?: RagMiddleware;
   eventBus?: EventBus;
   now?: () => Date;
 };
@@ -91,6 +93,7 @@ export class OrchestrationEngine {
   private readonly registry: AgentRegistry;
   private readonly lifecycleManager: AgentLifecycleManager;
   private readonly toolExecutor: ToolExecutor;
+  private readonly ragMiddleware: RagMiddleware;
   private readonly eventBus: EventBus | undefined;
   private readonly now: () => Date;
 
@@ -100,6 +103,7 @@ export class OrchestrationEngine {
     this.registry = options.registry;
     this.lifecycleManager = options.lifecycleManager;
     this.toolExecutor = options.toolExecutor;
+    this.ragMiddleware = options.ragMiddleware ?? new RagMiddleware();
     this.eventBus = options.eventBus;
     this.now = options.now ?? (() => new Date());
   }
@@ -407,7 +411,9 @@ export class OrchestrationEngine {
         .filter(
           (candidate) =>
             candidate.role === role &&
-            candidate.state === "idle" &&
+            (candidate.state === AgentState.idle ||
+              candidate.state === AgentState.completed ||
+              candidate.state === AgentState.failed) &&
             !candidate.currentTaskId &&
             !reservedAgentIds.has(candidate.id)
         )
@@ -475,6 +481,8 @@ export class OrchestrationEngine {
     projectRoot?: string
   ): Promise<TaskSnapshot> {
     const input = asJsonRecord(task.input);
+    let nextInput: Record<string, JsonValue> = structuredClone(input);
+    let changed = false;
 
     if (task.taskType === "pm") {
       const [tasks, agents] = await Promise.all([
@@ -488,41 +496,71 @@ export class OrchestrationEngine {
         }),
       ]);
 
-      return this.taskService.updateTask(task.id, {
-        input: {
-          ...input,
-          tasks: tasks.map((entry) => ({
-            id: entry.id,
-            name: entry.name,
-            status: entry.status,
-            priority: entry.priority,
-            ...(entry.taskType ? { taskType: entry.taskType } : {}),
-            dependsOn: entry.dependencyIds,
-            ...(entry.assignedAgentIds[0] ? { assignedAgentId: entry.assignedAgentIds[0] } : {}),
-          })),
-          agents: agents.map((entry) => ({
-            id: entry.id,
-            role: entry.role,
-            state: entry.state,
-            performanceScore: entry.getSnapshot().performanceScore,
-            ...(entry.currentTaskId ? { currentTaskId: entry.currentTaskId } : {}),
-          })),
-        },
-      });
+      nextInput = {
+        ...nextInput,
+        tasks: tasks.map((entry) => ({
+          id: entry.id,
+          name: entry.name,
+          status: entry.status,
+          priority: entry.priority,
+          ...(entry.taskType ? { taskType: entry.taskType } : {}),
+          dependsOn: entry.dependencyIds,
+          ...(entry.assignedAgentIds[0] ? { assignedAgentId: entry.assignedAgentIds[0] } : {}),
+        })),
+        agents: agents.map((entry) => ({
+          id: entry.id,
+          role: entry.role,
+          state: entry.state,
+          performanceScore: entry.getSnapshot().performanceScore,
+          ...(entry.currentTaskId ? { currentTaskId: entry.currentTaskId } : {}),
+        })),
+      };
+      changed = true;
     }
 
-    if (projectRoot && !input.workspacePath) {
-      return this.taskService.updateTask(task.id, {
-        input: {
-          ...input,
-          workspacePath: projectRoot,
-          projectRoot,
-          assignedRole: agent.role,
+    const resolvedProjectRoot =
+      readString(nextInput.workspacePath) ?? readString(nextInput.projectRoot) ?? projectRoot;
+
+    if (resolvedProjectRoot) {
+      if (!readString(nextInput.workspacePath)) {
+        nextInput.workspacePath = resolvedProjectRoot;
+        changed = true;
+      }
+      if (!readString(nextInput.projectRoot)) {
+        nextInput.projectRoot = resolvedProjectRoot;
+        changed = true;
+      }
+      if (readString(nextInput.assignedRole) !== agent.role) {
+        nextInput.assignedRole = agent.role;
+        changed = true;
+      }
+
+      const enrichment = await this.ragMiddleware.enrichTaskInput({
+        sessionId: task.sessionId,
+        projectRoot: resolvedProjectRoot,
+        task: {
+          ...task,
+          input: nextInput,
         },
+        agent,
       });
+
+      if (enrichment) {
+        nextInput = {
+          ...nextInput,
+          ...enrichment.inputPatch,
+        };
+        changed = true;
+      }
     }
 
-    return task;
+    if (!changed) {
+      return task;
+    }
+
+    return this.taskService.updateTask(task.id, {
+      input: nextInput,
+    });
   }
 
   private async delegateTools(
@@ -537,8 +575,11 @@ export class OrchestrationEngine {
     }
 
     const results: ToolExecutionResult[] = [];
+    const defaultProjectRoot =
+      readString(input.workspacePath) ?? readString(input.projectRoot) ?? projectRoot;
 
     for (const toolRequest of toolRequests) {
+      const resolvedProjectRoot = toolRequest.projectRoot ?? defaultProjectRoot;
       const request: ToolExecutionRequest = {
         sessionId: task.sessionId,
         agentId,
@@ -546,12 +587,21 @@ export class OrchestrationEngine {
         toolName: toolRequest.toolName,
         input: toolRequest.input,
         ...(toolRequest.timeoutMs ? { timeoutMs: toolRequest.timeoutMs } : {}),
-        ...((toolRequest.projectRoot ?? projectRoot)
-          ? { projectRoot: toolRequest.projectRoot ?? projectRoot ?? process.cwd() }
-          : {}),
+        ...(resolvedProjectRoot ? { projectRoot: resolvedProjectRoot } : {}),
       };
 
-      results.push(await this.toolExecutor.execute(request));
+      const result = await this.toolExecutor.execute(request);
+      results.push(result);
+
+      if (resolvedProjectRoot) {
+        await this.ragMiddleware.applyToolMutation({
+          sessionId: task.sessionId,
+          projectRoot: resolvedProjectRoot,
+          toolName: toolRequest.toolName,
+          toolInput: toolRequest.input,
+          result,
+        });
+      }
     }
 
     await this.taskService.updateTask(task.id, {
