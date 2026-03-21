@@ -1,10 +1,12 @@
 import type { EventInput, EventBus } from "../../events";
+import type { KnowledgeGraphService } from "../../knowledge-graph";
 import type { ApiRepository, HealthProvider } from "../types";
 
 export type ApiRouteDependencies = {
   repository: ApiRepository;
   eventBus: EventBus;
   healthProvider: HealthProvider;
+  knowledgeGraphService: KnowledgeGraphService;
 };
 
 export async function publishEventAndReplay(

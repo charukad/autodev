@@ -2,6 +2,7 @@ import { InMemoryEventBus } from "../../src/events";
 import { createApiServer } from "../../src/api/server";
 import { InMemoryApiRepository } from "../../src/api/repository/in-memory-api-repository";
 import { StaticHealthProvider } from "../../src/api/health";
+import { InMemoryKnowledgeGraphStore, KnowledgeGraphService } from "../../src/knowledge-graph";
 import type { HealthSummary } from "../../src/api/types";
 
 export async function createTestApiApp(
@@ -14,6 +15,7 @@ export async function createTestApiApp(
 ) {
   const repository = options.repository ?? new InMemoryApiRepository();
   const eventBus = new InMemoryEventBus();
+  const knowledgeGraphService = new KnowledgeGraphService(new InMemoryKnowledgeGraphStore());
   const healthProvider = new StaticHealthProvider(
     options.healthSummary ?? {
       status: "ok",
@@ -35,6 +37,7 @@ export async function createTestApiApp(
     repository,
     eventBus,
     healthProvider,
+    knowledgeGraphService,
     rateLimitMax: options.rateLimitMax ?? 100,
     rateLimitWindowMs: options.rateLimitWindowMs ?? 60_000,
   });
@@ -43,9 +46,11 @@ export async function createTestApiApp(
     app,
     repository,
     eventBus,
+    knowledgeGraphService,
     close: async () => {
       await app.close();
       await eventBus.close();
+      await knowledgeGraphService.close();
     },
   };
 }

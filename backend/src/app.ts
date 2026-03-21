@@ -65,6 +65,12 @@ export function getFoundationSummary() {
         semanticSearch: "available",
         codeGraph: "available",
       },
+      knowledgeGraph: {
+        entityExtraction: "available",
+        relationshipQueries: ["related", "traverse", "shortest-path"],
+        persistence: "available",
+        incrementalUpdates: "available",
+      },
     },
   };
 }

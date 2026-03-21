@@ -1,16 +1,16 @@
 # AI Office Coding System — Complete Project Task List
 
-> Comprehensive task breakdown covering all 44 features across 9 phases.
+> Comprehensive task breakdown covering all planned features and implementation phases.
 > Every feature is decomposed into actionable engineering tasks.
 
 ---
 
 # Current Status
 
-- [x] Latest completed local phase: `3.2 Knowledge Graph`
-- [x] Functional work for `3.2` is implemented and validated locally
-- [ ] Commit and push tasks for `3.2` are still pending by request
-- [ ] Next phase not started: `3.3 Context Window Management`
+- [x] Completed phases: `1.1` through `1.6`, plus `2.1`
+- [x] Latest completed phase: `2.1 Agent Core Framework`
+- [x] Backend foundation and agent core framework are implemented in the repository
+- [ ] Next phase not started: `2.2 Agent Roles Implementation`
 
 ---
 
@@ -110,39 +110,39 @@
 
 ### Core Tool Framework
 
-- [ ] Design `Tool` base interface (name, description, input schema, output schema, risk level)
+- [x] Design `Tool` base interface (name, description, input schema, output schema, risk level)
 
-- [ ] Implement `ToolRegistry` — register, discover, and invoke tools
-- [ ] Implement `ToolExecutor` — execute tools with timeout, logging, and error handling
-- [ ] Create tool input validation using JSON schema or Zod
+- [x] Implement `ToolRegistry` — register, discover, and invoke tools
+- [x] Implement `ToolExecutor` — execute tools with timeout, logging, and error handling
+- [x] Create tool input validation using JSON schema or Zod
 
-- [ ] Create tool output validation
-- [ ] Implement tool execution logging (all calls → `tool_calls` table)
-- [ ] Implement tool timeout with configurable limits
-- [ ] 📌 **Git Commit #19**: `chore(core-tool-framework): add tool output validation and tool execution logging` — Stage, commit, and push changes
-- [ ] Create tool error wrapping and standardized error responses
-- [ ] Implement tool execution sandboxing (restricted file paths, blocked commands)
+- [x] Create tool output validation
+- [x] Implement tool execution logging (all calls → `tool_calls` table)
+- [x] Implement tool timeout with configurable limits
+- [x] 📌 **Git Commit #19**: `chore(core-tool-framework): add tool output validation and tool execution logging` — Stage, commit, and push changes
+- [x] Create tool error wrapping and standardized error responses
+- [x] Implement tool execution sandboxing (restricted file paths, blocked commands)
 
 ### Core Tools Implementation
 
-- [ ] Implement `read_file` tool (path → contents)
+- [x] Implement `read_file` tool (path → contents)
 
-- [ ] Implement `write_file` tool (path + content → success/failure)
-- [ ] Implement `list_directory` tool (path → directory tree)
-- [ ] Implement `search_code` tool (query → matching files/lines using ripgrep)
+- [x] Implement `write_file` tool (path + content → success/failure)
+- [x] Implement `list_directory` tool (path → directory tree)
+- [x] Implement `search_code` tool (query → matching files/lines using ripgrep)
 
-- [ ] Implement `apply_patch` tool (unified diff → success/failure)
-- [ ] Implement `run_command` tool (command → stdout, stderr, exit_code)
-- [ ] Implement `create_file` tool (path + content → success/failure)
+- [x] Implement `apply_patch` tool (unified diff → success/failure)
+- [x] Implement `run_command` tool (command → stdout, stderr, exit_code)
+- [x] Implement `create_file` tool (path + content → success/failure)
 
-- [ ] Implement `delete_file` tool (path → success/failure)
-- [ ] Implement `move_file` tool (source + dest → success/failure)
-- [ ] Implement `get_file_info` tool (path → size, type, modified date)
+- [x] Implement `delete_file` tool (path → success/failure)
+- [x] Implement `move_file` tool (source + dest → success/failure)
+- [x] Implement `get_file_info` tool (path → size, type, modified date)
 
-- [ ] Add risk classification to each tool (safe / moderate / dangerous)
-- [ ] Write unit tests for every tool
-- [ ] Write integration tests for tool registry and executor
-- [ ] 📌 **Git Commit #
+- [x] Add risk classification to each tool (safe / moderate / dangerous)
+- [x] Write unit tests for every tool
+- [x] Write integration tests for tool registry and executor
+- [x] 📌 Git commits and push completed for Phase 1.4
 
 ---
 
@@ -150,83 +150,76 @@
 
 ### CLI Framework Setup
 
-- [ ] Set up CLI framework (Commander.js, Oclif, or Yargs)
-- [ ] Create CLI entry point (`ai-office`)
-- [ ] Implement global options (`--verbose`, `--config`, `--project`)
+- [x] Set up CLI framework (Commander.js, Oclif, or Yargs)
+- [x] Create CLI entry point (`ai-office`)
+- [x] Implement global options (`--verbose`, `--config`, `--project`)
 
-- [ ] Create configuration file loader (`.ai-office.yaml` or `.ai-office.json`)
-- [ ] Implement config validation
-- [ ] Create CLI utput formatting (tables, JSON, plain text)
+- [x] Create configuration file loader (`.ai-office.yaml` or `.ai-office.json`)
+- [x] Implement config validation
+- [x] Create CLI output formatting (tables, JSON, plain text)
 
-- [ ] Implement colored output with chalk/kleur
-- [ ] Create progress spinners and progress bars
-- [ ] Implement logging levels (debug, info, warn, error)
-- [ ] 📌 **Git Commit #27**: `fix(cli-framework-setup): add colored output with and progress spinners and` — Stage, commit, and push changes
+- [x] Implement colored output with chalk/kleur
+- [x] Create progress spinners and progress bars
+- [x] Implement logging levels (debug, info, warn, error)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.5, per request
 
 ### CLI Commands
 
-- [ ] Implement `ai-office init` — initialize project configuration
-- [ ] Implement `ai-office start` — start a new session
-- [ ] Implement `ai-office stop` — end current session
-- [ ] 📌 **Git Commit #28**: `chore(cli-commands): add ai-office init` — and ai-office start` —` — Stage, commit, and push changes
-- [ ] Implement `ai-office status` — show system status
-- [ ] Implement `ai-office task create <description>` — create a new task
-- [ ] Implement `ai-office task list` — list all tasks
-- [ ] 📌 **Git Commit #29**: `feat(cli-commands): add ai-office status` — and ai-office task` — Stage, commit, and push changes
-- [ ] Implement `ai-office task status <id>` — show task details
-- [ ] Implement `ai-office task cancel <id>` — cancel a task
-- [ ] Implement `ai-office agents` — list active agents
-- [ ] 📌 **Git Commit #30**: `feat(cli-commands): add ai-office task status and ai-office task cancel` — Stage, commit, and push changes
-- [ ] Implement `ai-office agents <id>` — show agent details
-- [ ] Implement `ai-office replay` — replay a session
-- [ ] Implement `ai-office replay list` — list saved sessions
-- [ ] 📌 **Git Commit #31**: `feat(cli-commands): add ai-office agents <id> and ai-office replay` —` — Stage, commit, and push changes
-- [ ] Implement `ai-office budget` — show resource budget
-- [ ] Implement `ai-office budget set` — configure budget limits
-- [ ] Implement `ai-office config` — view/edit configuration
-- [ ] 📌 **Git Commit #32**: `chore(cli-commands): add ai-office budget` — and ai-office budget set` — Stage, commit, and push changes
-- [ ] Implement `ai-office logs` — stream system logs
-- [ ] Implement `ai-office version` — show version info
-- [ ] Implement `ai-office help` — show help for all commands
-- [ ] 📌 **Git Commit #33**: `feat(cli-commands): add ai-office logs` — and ai-office version` —` — Stage, commit, and push changes
+- [x] Implement `ai-office init` — initialize project configuration
+- [x] Implement `ai-office start` — start a new session
+- [x] Implement `ai-office stop` — end current session
+- [x] Implement `ai-office status` — show system status
+- [x] Implement `ai-office task create <description>` — create a new task
+- [x] Implement `ai-office task list` — list all tasks
+- [x] Implement `ai-office task status <id>` — show task details
+- [x] Implement `ai-office task cancel <id>` — cancel a task
+- [x] Implement `ai-office agents` — list active agents
+- [x] Implement `ai-office agents <id>` — show agent details
+- [x] Implement `ai-office replay` — replay a session
+- [x] Implement `ai-office replay list` — list saved sessions
+- [x] Implement `ai-office budget` — show resource budget
+- [x] Implement `ai-office budget set` — configure budget limits
+- [x] Implement `ai-office config` — view/edit configuration
+- [x] Implement `ai-office logs` — stream system logs
+- [x] Implement `ai-office version` — show version info
+- [x] Implement `ai-office help` — show help for all commands
 
 ### CLI Communication Layer
 
-- [ ] Create HTTP API client for CLI → backend
-- [ ] Create WebSocket client for real-time event streaming
-- [ ] Implement reconnection logic for WebSocket
-- [ ] 📌 **Git Commit #34**: `feat(cli-communication-layer): add http api client and websocket client for` — Stage, commit, and push changes
-- [ ] Create authentication/API key management
-- [ ] Implement request timeout handling
-- [ ] Write unit tests for all CLI commands
-- [ ] 📌 **Git Commit #35**: `test(cli-communication-layer): add authentication/api key management and request timeout handling` — Stage, commit, and push changes
-- [ ] Write integration tests for CLI → backend communication
+- [x] Create HTTP API client for CLI → backend
+- [x] Create WebSocket client for real-time event streaming
+- [x] Implement reconnection logic for WebSocket
+- [x] Create authentication/API key management
+- [x] Implement request timeout handling
+- [x] Write unit tests for all CLI commands
+- [x] Write integration tests for CLI → backend communication
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.5, per request
 
 ---
 
 ## 1.6 Backend API Server
 
-- [ ] Set up HTTP server (Express, Fastify, or Hono)
-- [ ] Create API route structure (`/api/v1/...`)
-- [ ] 📌 **Git Commit #36**: `feat(16-backend-api-server): add http server and api route structure` — Stage, commit, and push changes
-- [ ] Implement health check endpoint (`GET /health`)
-- [ ] Create session management endpoints (`POST /sessions`, `GET /sessions/:id`, `DELETE /sessions/:id`)
-- [ ] Create task management endpoints (`POST /tasks`, `GET /tasks`, `GET /tasks/:id`, `PATCH /tasks/:id`)
-- [ ] 📌 **Git Commit #37**: `feat(16-backend-api-server): add health check endpoint and session management endpoints` — Stage, commit, and push changes
-- [ ] Create agent endpoints (`GET /agents`, `GET /agents/:id`)
-- [ ] Create event streaming endpoint (WebSocket or SSE)
-- [ ] Create budget endpoints (`GET /budget`, `PATCH /budget`)
-- [ ] 📌 **Git Commit #38**: `feat(16-backend-api-server): add agent endpoints (`get and event streaming endpoint` — Stage, commit, and push changes
-- [ ] Create replay endpoints (`GET /replay/:sessionId`, `GET /replay/:sessionId/frames`)
-- [ ] Implement request validation middleware
-- [ ] Implement error handling middleware
-- [ ] 📌 **Git Commit #39**: `feat(16-backend-api-server): add replay endpoints (`get and request validation middleware` — Stage, commit, and push changes
-- [ ] Implement request logging middleware
-- [ ] Implement rate limiting middleware
-- [ ] Create API documentation (OpenAPI/Swagger)
-- [ ] 📌 **Git Commit #40**: `docs(16-backend-api-server): add request logging middleware and rate limiting middleware` — Stage, commit, and push changes
-- [ ] Write unit tests for all endpoints
-- [ ] Write integration tests for full API flows
+- [x] Set up HTTP server (Express, Fastify, or Hono)
+- [x] Create API route structure (`/api/v1/...`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Implement health check endpoint (`GET /health`)
+- [x] Create session management endpoints (`POST /sessions`, `GET /sessions/:id`, `DELETE /sessions/:id`)
+- [x] Create task management endpoints (`POST /tasks`, `GET /tasks`, `GET /tasks/:id`, `PATCH /tasks/:id`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Create agent endpoints (`GET /agents`, `GET /agents/:id`)
+- [x] Create event streaming endpoint (WebSocket or SSE)
+- [x] Create budget endpoints (`GET /budget`, `PATCH /budget`)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Create replay endpoints (`GET /replay/:sessionId`, `GET /replay/:sessionId/frames`)
+- [x] Implement request validation middleware
+- [x] Implement error handling middleware
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Implement request logging middleware
+- [x] Implement rate limiting middleware
+- [x] Create API documentation (OpenAPI/Swagger)
+- [x] 📌 Single end-of-phase commit will be used for Phase 1.6, per request
+- [x] Write unit tests for all endpoints
+- [x] Write integration tests for full API flows
 
 ---
 
@@ -240,44 +233,44 @@
 
 ### Agent Base
 
-- [ ] Design `Agent` base class/interface
-- [ ] 📌 **Git Commit #41**: `feat(agent-base): add agent` base class/interface` — Stage, commit, and push changes
-- [ ] Implement agent properties (id, role, state, room, task, memory, performance, tools, budget)
-- [ ] Implement agent state machine (Idle → Planning → Thinking → Reading → Writing → Testing → Debugging → Completed/Failed)
-- [ ] Create state transition validation (legal transitions only)
-- [ ] 📌 **Git Commit #42**: `fix(agent-base): add agent properties (id, and agent state machine` — Stage, commit, and push changes
-- [ ] Implement state change event emission
-- [ ] Create agent serialization/deserialization for persistence
-- [ ] Implement agent context (current task, relevant files, conversation history)
-- [ ] 📌 **Git Commit #43**: `feat(agent-base): add state change event and agent serialization/deserialization for` — Stage, commit, and push changes
+- [x] Design `Agent` base class/interface
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement agent properties (id, role, state, room, task, memory, performance, tools, budget)
+- [x] Implement agent state machine (Idle → Planning → Thinking → Reading → Writing → Testing → Debugging → Completed/Failed)
+- [x] Create state transition validation (legal transitions only)
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement state change event emission
+- [x] Create agent serialization/deserialization for persistence
+- [x] Implement agent context (current task, relevant files, conversation history)
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
 
 ### Agent Registry
 
-- [ ] Implement `AgentRegistry` class
-- [ ] Implement agent registration (spawn)
-- [ ] Implement agent deregistration (terminate)
-- [ ] 📌 **Git Commit #44**: `feat(agent-registry): add agentregistry` class and agent registration (spawn` — Stage, commit, and push changes
-- [ ] Implement agent lookup by ID, role, state, room
-- [ ] Implement agent listing with filters
-- [ ] Create agent registry persistence (save/load from DB)
-- [ ] 📌 **Git Commit #45**: `feat(agent-registry): add agent lookup by and agent listing with` — Stage, commit, and push changes
-- [ ] Implement agent count limits per role
-- [ ] Write unit tests for agent registry
+- [x] Implement `AgentRegistry` class
+- [x] Implement agent registration (spawn)
+- [x] Implement agent deregistration (terminate)
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement agent lookup by ID, role, state, room
+- [x] Implement agent listing with filters
+- [x] Create agent registry persistence (save/load from DB)
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement agent count limits per role
+- [x] Write unit tests for agent registry
 
 ### Agent Lifecycle Manager
 
-- [ ] Implement `AgentLifecycleManager` class
-- [ ] 📌 **Git Commit #46**: `feat(agent-lifecycle-manager): add agentlifecyclemanager` class` — Stage, commit, and push changes
-- [ ] Implement agent spawning logic
-- [ ] Implement task assignment to agents
-- [ ] Implement agent execution loop (receive task → plan → execute → evaluate)
-- [ ] 📌 **Git Commit #47**: `feat(agent-lifecycle-manager): add agent spawning logic and task assignment to` — Stage, commit, and push changes
-- [ ] Implement agent evaluation (success/failure scoring)
-- [ ] Implement agent termination
-- [ ] Implement agent reassignment on failure
-- [ ] 📌 **Git Commit #48**: `feat(agent-lifecycle-manager): add agent evaluation (success/failure and agent termination` — Stage, commit, and push changes
-- [ ] Create lifecycle event emissions (AGENT_SPAWNED, AGENT_ASSIGNED, AGENT_COMPLETED, AGENT_FAILED)
-- [ ] Write unit tests for lifecycle manager
+- [x] Implement `AgentLifecycleManager` class
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement agent spawning logic
+- [x] Implement task assignment to agents
+- [x] Implement agent execution loop (receive task → plan → execute → evaluate)
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Implement agent evaluation (success/failure scoring)
+- [x] Implement agent termination
+- [x] Implement agent reassignment on failure
+- [x] 📌 Single end-of-phase commit will be used for Phase 2.1, per request
+- [x] Create lifecycle event emissions (AGENT_SPAWNED, AGENT_ASSIGNED, AGENT_COMPLETED, AGENT_FAILED)
+- [x] Write unit tests for lifecycle manager
 
 ---
 
@@ -492,19 +485,19 @@
 
 ## 3.2 Knowledge Graph
 
-- [x] Design knowledge graph schema (entities: APIs, services, functions, modules, configs)
-- [x] Design relationship types (calls, reads, writes, depends, extends, implements)
+- [ ] Design knowledge graph schema (entities: APIs, services, functions, modules, configs)
+- [ ] Design relationship types (calls, reads, writes, depends, extends, implements)
 - [ ] 📌 **Git Commit #86**: `chore(32-knowledge-graph): add knowledge graph schema and relationship types (calls` — Stage, commit, and push changes
-- [x] Implement knowledge graph storage (in PostgreSQL with JSON or dedicated graph DB)
-- [x] Implement entity extraction from codebase
-- [x] Implement relationship extraction from code analysis
+- [ ] Implement knowledge graph storage (in PostgreSQL with JSON or dedicated graph DB)
+- [ ] Implement entity extraction from codebase
+- [ ] Implement relationship extraction from code analysis
 - [ ] 📌 **Git Commit #87**: `feat(32-knowledge-graph): add knowledge graph storage and entity extraction from` — Stage, commit, and push changes
-- [x] Implement knowledge graph queries (traverse, find related, shortest path)
-- [x] Implement knowledge graph updates on code change
-- [x] Implement knowledge graph merging (combine graphs from multiple analyses)
+- [ ] Implement knowledge graph queries (traverse, find related, shortest path)
+- [ ] Implement knowledge graph updates on code change
+- [ ] Implement knowledge graph merging (combine graphs from multiple analyses)
 - [ ] 📌 **Git Commit #88**: `test(32-knowledge-graph): add knowledge graph queries and knowledge graph updates` — Stage, commit, and push changes
-- [x] Create API for agents to query knowledge graph
-- [x] Write unit tests for knowledge graph operations
+- [ ] Create API for agents to query knowledge graph
+- [ ] Write unit tests for knowledge graph operations
 
 ---
 

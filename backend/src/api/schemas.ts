@@ -8,6 +8,11 @@ import {
   TaskPriority,
   TaskStatus,
 } from "@prisma/client";
+import type {
+  KnowledgeNodeType,
+  KnowledgeRelationshipType,
+  KnowledgeTraversalDirection,
+} from "../knowledge-graph";
 
 const jsonValueSchema: z.ZodTypeAny = z.lazy(() =>
   z.union([
@@ -175,6 +180,106 @@ export const replaySessionParamsSchema = z.object({
 export const eventStreamQuerySchema = z.object({
   session_id: z.string().uuid().optional(),
   token: z.string().min(1).optional(),
+});
+
+const knowledgeNodeTypeValues = [
+  "api",
+  "service",
+  "function",
+  "class",
+  "module",
+  "configuration",
+  "database",
+  "external_service",
+  "feature",
+] as const satisfies readonly KnowledgeNodeType[];
+
+const knowledgeRelationshipValues = [
+  "calls",
+  "reads",
+  "writes",
+  "depends",
+  "extends",
+  "implements",
+  "imports",
+  "uses",
+] as const satisfies readonly KnowledgeRelationshipType[];
+
+const knowledgeTraversalDirections = [
+  "outgoing",
+  "incoming",
+  "both",
+] as const satisfies readonly KnowledgeTraversalDirection[];
+
+export const knowledgeNodeSchema = z.object({
+  id: z.string().uuid(),
+  sessionId: z.string().uuid(),
+  nodeType: z.enum(knowledgeNodeTypeValues),
+  name: z.string(),
+  filePath: z.string().optional(),
+  lineStart: z.number().int().positive().optional(),
+  lineEnd: z.number().int().positive().optional(),
+  metadata: z.record(z.string(), jsonValueSchema),
+  createdAt: z.string().datetime(),
+});
+
+export const knowledgeEdgeSchema = z.object({
+  id: z.string().uuid(),
+  sourceNodeId: z.string().uuid(),
+  targetNodeId: z.string().uuid(),
+  relationship: z.enum(knowledgeRelationshipValues),
+  metadata: z.record(z.string(), jsonValueSchema),
+  createdAt: z.string().datetime(),
+});
+
+export const knowledgeGraphIndexBodySchema = z.object({
+  sessionId: z.string().uuid(),
+  projectPath: z.string().min(1).optional(),
+});
+
+export const knowledgeNodeListQuerySchema = z.object({
+  sessionId: z.string().uuid(),
+  nodeType: z.enum(knowledgeNodeTypeValues).optional(),
+  filePath: z.string().min(1).optional(),
+  nameContains: z.string().min(1).optional(),
+});
+
+export const knowledgeEdgeListQuerySchema = z.object({
+  sessionId: z.string().uuid(),
+  relationship: z.enum(knowledgeRelationshipValues).optional(),
+  sourceNodeId: z.string().uuid().optional(),
+  targetNodeId: z.string().uuid().optional(),
+});
+
+export const knowledgeTraversalQuerySchema = z.object({
+  sessionId: z.string().uuid(),
+  nodeId: z.string().uuid(),
+  depth: z.coerce.number().int().positive().max(10).default(2),
+  direction: z.enum(knowledgeTraversalDirections).default("both"),
+  relationship: z.enum(knowledgeRelationshipValues).optional(),
+});
+
+export const knowledgeRelatedQuerySchema = z.object({
+  sessionId: z.string().uuid(),
+  nodeId: z.string().uuid(),
+  direction: z.enum(knowledgeTraversalDirections).default("both"),
+  relationship: z.enum(knowledgeRelationshipValues).optional(),
+});
+
+export const knowledgePathQuerySchema = z.object({
+  sessionId: z.string().uuid(),
+  sourceNodeId: z.string().uuid(),
+  targetNodeId: z.string().uuid(),
+  relationship: z.enum(knowledgeRelationshipValues).optional(),
+});
+
+export const knowledgeTraversalSchema = z.object({
+  nodes: z.array(knowledgeNodeSchema),
+  edges: z.array(knowledgeEdgeSchema),
+});
+
+export const knowledgePathSchema = knowledgeTraversalSchema.extend({
+  pathFound: z.boolean(),
 });
 
 export type ValidationSchemas = {

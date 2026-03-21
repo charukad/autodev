@@ -3,6 +3,7 @@ import test from "node:test";
 import WebSocket from "ws";
 import { AgentRole, AgentState } from "@prisma/client";
 import { createTestApiApp } from "../helpers/api-test-utils";
+import { createTempProject, writeProjectFile } from "../helpers/tool-test-utils";
 
 test("health endpoint and docs endpoint respond successfully", async (t) => {
   const { app, close } = await createTestApiApp();
@@ -283,4 +284,88 @@ test("websocket event streaming forwards matching events", async (t) => {
   const event = await receivedEvent;
   assert.equal(event.eventType, "TASK_CREATED");
   assert.equal(event.sessionId, session.id);
+});
+
+test("knowledge graph routes index and query semantic graph data", async (t) => {
+  const projectRoot = await createTempProject(t);
+  await writeProjectFile(
+    projectRoot,
+    "src/report-service.ts",
+    [
+      "import { prisma } from './db';",
+      "export class ReportService {",
+      "  buildReport() {",
+      "    return prisma.report.findMany();",
+      "  }",
+      "}",
+      "",
+    ].join("\n")
+  );
+  await writeProjectFile(
+    projectRoot,
+    "src/routes.ts",
+    [
+      "import { ReportService } from './report-service';",
+      "app.get('/reports', async () => {",
+      "  return new ReportService().buildReport();",
+      "});",
+      "",
+    ].join("\n")
+  );
+
+  const { app, close } = await createTestApiApp();
+  t.after(async () => {
+    await close();
+  });
+
+  const sessionResponse = await app.inject({
+    method: "POST",
+    url: "/api/v1/sessions",
+    payload: {
+      projectPath: projectRoot,
+      projectName: "Knowledge Graph",
+      config: {},
+    },
+  });
+  const session = sessionResponse.json();
+
+  const indexResponse = await app.inject({
+    method: "POST",
+    url: "/api/v1/knowledge-graph/index",
+    payload: {
+      sessionId: session.id,
+    },
+  });
+  assert.equal(indexResponse.statusCode, 200);
+  assert.ok(indexResponse.json().nodeCount > 0);
+
+  const nodesResponse = await app.inject({
+    method: "GET",
+    url: `/api/v1/knowledge-graph/nodes?sessionId=${session.id}&nodeType=service`,
+  });
+  assert.equal(nodesResponse.statusCode, 200);
+  assert.equal(
+    nodesResponse.json().some((node: { name: string }) => node.name === "ReportService"),
+    true
+  );
+
+  const apiNodeId = (
+    await app.inject({
+      method: "GET",
+      url: `/api/v1/knowledge-graph/nodes?sessionId=${session.id}&nodeType=api`,
+    })
+  ).json()[0].id;
+  const serviceNodeId = nodesResponse
+    .json()
+    .find((node: { name: string }) => node.name === "ReportService").id;
+
+  const relatedResponse = await app.inject({
+    method: "GET",
+    url: `/api/v1/knowledge-graph/related?sessionId=${session.id}&nodeId=${apiNodeId}&relationship=calls&direction=outgoing`,
+  });
+  assert.equal(relatedResponse.statusCode, 200);
+  assert.equal(
+    relatedResponse.json().nodes.some((node: { id: string }) => node.id === serviceNodeId),
+    true
+  );
 });

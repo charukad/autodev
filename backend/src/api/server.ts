@@ -6,6 +6,11 @@ import websocket from "@fastify/websocket";
 import { PROJECT_NAME, PROJECT_VERSION } from "@ai-office/shared";
 import type { EventBus } from "../events";
 import { InMemoryEventBus, PrismaEventStore } from "../events";
+import {
+  InMemoryKnowledgeGraphStore,
+  KnowledgeGraphService,
+  PrismaKnowledgeGraphStore,
+} from "../knowledge-graph";
 import { disconnectPrismaClient } from "../infrastructure/database/prisma/client";
 import { disconnectRedisClients } from "../infrastructure/database/redis/redis-client";
 import { getEnvironment } from "../config/env";
@@ -18,6 +23,7 @@ import { createAgentRoutes } from "./routes/agent-routes";
 import { createBudgetRoutes } from "./routes/budget-routes";
 import { createEventRoutes } from "./routes/event-routes";
 import { createHealthRoutes } from "./routes/health-routes";
+import { createKnowledgeGraphRoutes } from "./routes/knowledge-graph-routes";
 import { createReplayRoutes } from "./routes/replay-routes";
 import { type ApiRouteDependencies } from "./routes/route-utils";
 import { createSessionRoutes } from "./routes/session-routes";
@@ -35,6 +41,7 @@ export type CreateApiServerOptions = {
   repository?: ApiRepository;
   eventBus?: EventBus;
   healthProvider?: HealthProvider;
+  knowledgeGraphService?: KnowledgeGraphService;
   rateLimitMax?: number;
   rateLimitWindowMs?: number;
 };
@@ -46,9 +53,15 @@ export async function createApiServer(
   const repository = options.repository ?? new PrismaApiRepository();
   const eventBus = options.eventBus ?? new InMemoryEventBus({ store: new PrismaEventStore() });
   const healthProvider = options.healthProvider ?? new DefaultHealthProvider();
+  const knowledgeGraphService =
+    options.knowledgeGraphService ??
+    new KnowledgeGraphService(
+      options.repository ? new InMemoryKnowledgeGraphStore() : new PrismaKnowledgeGraphStore()
+    );
   const ownsRepository = !options.repository;
   const ownsEventBus = !options.eventBus;
   const ownsHealthProvider = !options.healthProvider;
+  const ownsKnowledgeGraphService = !options.knowledgeGraphService;
 
   const app = Fastify({
     logger: options.logger ?? true,
@@ -59,6 +72,7 @@ export async function createApiServer(
     repository,
     eventBus,
     healthProvider,
+    knowledgeGraphService,
   });
 
   await app.register(swagger, {
@@ -107,6 +121,7 @@ export async function createApiServer(
       await instance.register(createAgentRoutes(app.aiOffice));
       await instance.register(createBudgetRoutes(app.aiOffice));
       await instance.register(createReplayRoutes(app.aiOffice));
+      await instance.register(createKnowledgeGraphRoutes(app.aiOffice));
     },
     { prefix: "/api/v1" }
   );
@@ -122,6 +137,10 @@ export async function createApiServer(
 
     if (ownsHealthProvider) {
       await healthProvider.close();
+    }
+
+    if (ownsKnowledgeGraphService) {
+      await knowledgeGraphService.close();
     }
 
     await disconnectRedisClients();
